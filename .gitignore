@@ -1,0 +1,10 @@
+*.dll
+*.exe
+*.exp
+*.lib
+*.log
+*.oca
+*.ocx
+
+# VB6
+*.vbw
