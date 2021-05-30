@@ -16,3 +16,8 @@ backup/
 *.obj
 *.lps
 *.compiled
+
+# Visual Studio
+.vs/
+x64/
+*.user
