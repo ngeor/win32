@@ -8,3 +8,11 @@
 
 # VB6
 *.vbw
+
+# Lazarus
+*.o
+*.ppu
+backup/
+*.obj
+*.lps
+*.compiled
