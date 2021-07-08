@@ -33,7 +33,7 @@ LRESULT CPropertyPageDialog::dialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 	if (msg == WM_DESTROY)
 	{
 		delete obj;
-		SetWindowLongPtr(hWnd, DWLP_USER, 0);
+		detachFromDialog(hWnd);
 	}
 	return ret;
 }

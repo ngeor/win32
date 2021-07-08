@@ -21,12 +21,28 @@ CObjectWindow::~CObjectWindow()
 
 void CObjectWindow::attatchToDialog(HWND hWnd)
 {
-	SetWindowLongPtr(hWnd, DWLP_USER, (LONG) this);
+	setUserLong(hWnd, (LONG) this);
+}
+
+void CObjectWindow::detachFromDialog(HWND hWnd) {
+	setUserLong(hWnd, 0);
+}
+
+void CObjectWindow::setUserLong(HWND hWnd, LONG userData) {
+#if _MSC_VER > 1200
+	SetWindowLongPtr(hWnd, DWLP_USER, userData);
+#else
+	SetWindowLong(hWnd, DWL_USER, userData);
+#endif
 }
 
 CObjectWindow* CObjectWindow::objectFromDialog(HWND hWnd)
 {
+#if _MSC_VER > 1200
 	return (CObjectWindow*) GetWindowLongPtr(hWnd, DWLP_USER);
+#else
+	return (CObjectWindow*) GetWindowLong(hWnd, DWL_USER);
+#endif
 }
 
 LRESULT CObjectWindow::dialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

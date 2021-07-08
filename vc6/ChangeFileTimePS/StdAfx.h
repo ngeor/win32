@@ -15,6 +15,10 @@
 #endif
 #define _ATL_APARTMENT_THREADED
 
+#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+
+#include <windows.h>
+
 #include <atlbase.h>
 //You may derive a class from CComModule and use it if you want to override
 //something, but do not change the name of _Module
@@ -22,6 +26,7 @@ extern CComModule _Module;
 #include <atlcom.h>
 #include <comdef.h>
 #include <shlobj.h>
+#include <shellapi.h>
 
 class string_list {
 private:
@@ -36,7 +41,7 @@ private:
 				temp[i] = data[i];
 			for (int j = size; j < capacity; j++)
 				temp[j] = new TCHAR[MAX_PATH];
-			
+
 			delete[] data;
 			data = temp;
 		}

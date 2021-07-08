@@ -500,9 +500,14 @@ public:
 					case PSN_APPLY:
 						bool result;
 						result = OnOK();
-						if (result)
+						if (result) {
 							Nag();
+						}
+#if _MSC_VER > 1200
 						SetWindowLongPtr( hWnd, DWLP_MSGRESULT, (result) ? PSNRET_NOERROR : PSNRET_INVALID);
+#else
+						SetWindowLong(hWnd, DWL_MSGRESULT, result ? PSNRET_NOERROR : PSNRET_INVALID);
+#endif
 						return 1;
 					break;
 
