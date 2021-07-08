@@ -61,7 +61,11 @@ void GWindow::SetCaption(LPCTSTR szText)
 	if (len > 0)
 	{
 		FCaption = (LPTSTR) malloc((len + 1) * sizeof(TCHAR));
+#if _MSC_VER > 1200
 		_tcscpy_s(FCaption, len + 1, szText);
+#else
+		_tcscpy(FCaption, szText);
+#endif
 	}
 	else
 		FCaption = NULL;
