@@ -30,10 +30,6 @@
 #error this stub requires an updated version of <rpcndr.h>
 #endif /* __RPCNDR_H_VERSION__ */
 
-#ifndef COM_NO_WINDOWS_H
-#include "windows.h"
-#include "ole2.h"
-#endif /*COM_NO_WINDOWS_H*/
 
 #ifndef __ChangeFileTimePS_h_h__
 #define __ChangeFileTimePS_h_h__
@@ -71,6 +67,16 @@ typedef struct ChangeFileTimeHandler ChangeFileTimeHandler;
 extern "C"{
 #endif 
 
+
+
+#ifndef __CHANGEFILETIMEPSLib_LIBRARY_DEFINED__
+#define __CHANGEFILETIMEPSLib_LIBRARY_DEFINED__
+
+/* library CHANGEFILETIMEPSLib */
+/* [helpstring][version][uuid] */ 
+
+
+EXTERN_C const IID LIBID_CHANGEFILETIMEPSLib;
 
 #ifndef __IChangeFileTimeHandler_INTERFACE_DEFINED__
 #define __IChangeFileTimeHandler_INTERFACE_DEFINED__
@@ -191,16 +197,6 @@ EXTERN_C const IID IID_IChangeFileTimeHandler;
 
 #endif 	/* __IChangeFileTimeHandler_INTERFACE_DEFINED__ */
 
-
-
-#ifndef __CHANGEFILETIMEPSLib_LIBRARY_DEFINED__
-#define __CHANGEFILETIMEPSLib_LIBRARY_DEFINED__
-
-/* library CHANGEFILETIMEPSLib */
-/* [helpstring][version][uuid] */ 
-
-
-EXTERN_C const IID LIBID_CHANGEFILETIMEPSLib;
 
 EXTERN_C const CLSID CLSID_ChangeFileTimeHandler;
 

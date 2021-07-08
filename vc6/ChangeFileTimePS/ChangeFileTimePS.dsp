@@ -99,6 +99,10 @@ SOURCE=.\ChangeFileTimePS.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ChangeFileTimePS.idl
+# End Source File
+# Begin Source File
+
 SOURCE=.\ObjectWindow.cpp
 # End Source File
 # Begin Source File
@@ -163,6 +167,10 @@ SOURCE=.\icon1.ico
 SOURCE=.\Question.ico
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\ChangeFileTimePS.def
+# End Source File
 # Begin Source File
 
 SOURCE=.\ReadMe.txt

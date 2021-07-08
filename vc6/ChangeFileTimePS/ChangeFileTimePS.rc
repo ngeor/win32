@@ -38,15 +38,11 @@ BEGIN
     "\0"
 END
 
-#if _MSC_VER > 1200
-
 3 TEXTINCLUDE DISCARDABLE
 BEGIN
     "1 TYPELIB ""ChangeFileTimePS.tlb""\r\n"
     "\0"
 END
-
-#endif    // _MSC_VER > 1200
 
 #endif    // APSTUDIO_INVOKED
 
@@ -233,15 +229,11 @@ END
 
 #ifndef APSTUDIO_INVOKED
 
-#if _MSC_VER > 1200
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
 1 TYPELIB "ChangeFileTimePS.tlb"
-
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
