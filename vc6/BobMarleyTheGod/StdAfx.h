@@ -26,7 +26,10 @@
 #include <tchar.h>
 #include <time.h>
 #include <math.h>
-
+#if _MSC_VER <= 1200
+// Visual Studio C++ 6
+#include <stdio.h>
+#endif
 // Local Header Files
 
 // TODO: reference additional headers your program requires here

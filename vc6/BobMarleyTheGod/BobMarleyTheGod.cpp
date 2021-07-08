@@ -30,18 +30,24 @@ void LoadMarleyPic()
 {
 	TCHAR szFile[MAX_PATH];
 	TCHAR szFileX[MAX_PATH];
-	int i;
 	UINT oldPic = currPic;
 
-	while (oldPic == currPic)
+	while (oldPic == currPic) {
 		currPic = 1 + (rand() % PHOTO_COUNT);
+	}
 
 	// returns something like C:\Users\ngeor\Projects\github\BobMarleyTheGod\Debug\BobMarleyTheGod.scr
 	GetModuleFileName(0, szFileX, MAX_PATH);
 	LPTSTR lastOccurenceOfPath = _tcsrchr(szFileX, '\\');
 	*lastOccurenceOfPath = '\0';
+#if _MSC_VER > 1200
+	// Greater than Visual Studio C++ 6
 	_tcscat_s(szFileX, MAX_PATH, _T("\\%d.jpg"));
 	_stprintf_s(szFile, MAX_PATH, szFileX, currPic);
+#else
+	_tcscat(szFileX, _T("\\%d.jpg"));
+	_stprintf(szFile, szFileX, currPic);
+#endif
 	LoadPictureFile(szFile, &bobPic);
 }
 
