@@ -28,6 +28,16 @@
 
 // TODO: reference additional headers your program requires here
 
+#if _MSC_VER > 1200
+	#define OVERRIDE override
+#else
+	#define OVERRIDE
+	#define _ftscanf_s _ftscanf
+	#define _stscanf_s _stscanf
+	#define _tcscpy_s _tcscpy
+	#define _stprintf_s _stprintf
+#endif
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

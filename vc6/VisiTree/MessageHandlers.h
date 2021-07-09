@@ -1,7 +1,7 @@
 #if !defined(MESSAGE_HANDLERS_H)
 #define MESSAGE_HANDLERS_H
 
-#include "StdAfx.h"
+
 #include <list>
 
 class AbstractMessageHandler
@@ -13,7 +13,7 @@ public:
 class DefaultMessageHandler : public AbstractMessageHandler
 {
 public:
-	bool Handle(LPMSG msg) override;
+	bool Handle(LPMSG msg) OVERRIDE;
 };
 
 class DialogMessageHandler : public AbstractMessageHandler
@@ -23,7 +23,7 @@ private:
 
 public:
 	DialogMessageHandler(HWND hWnd) : m_wnd(hWnd) {}
-	bool Handle(LPMSG msg) override;
+	bool Handle(LPMSG msg) OVERRIDE;
 };
 
 class CompositeMessageHandler : public AbstractMessageHandler
@@ -33,7 +33,7 @@ private:
 
 public:
 	virtual ~CompositeMessageHandler();
-	bool Handle(LPMSG msg) override;
+	bool Handle(LPMSG msg) OVERRIDE;
 	void Add(AbstractMessageHandler *handler);
 };
 
