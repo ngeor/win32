@@ -194,7 +194,11 @@ void DoOpenFile(HWND hWnd, LPCTSTR szFileName)
 	else
 		p = buf;
 
+#if _MSC_VER > 1200
 	_tfopen_s(&fp, p, _T("rt"));
+#else
+	fp = _tfopen(p, _T("rt"));
+#endif
 	SendDlgItemMessage(hWnd, ID_LST_ICONS, LB_RESETCONTENT, 0, 0);
 	while (	_fgetts(buf, MAX_PATH, fp) != NULL )
 	{
@@ -248,12 +252,20 @@ void OnCmdOpenFile(HWND hWnd)
 void DoSaveFile(HWND hWnd, LPCTSTR szFileName)
 {
 	FILE *fp;
+#if _MSC_VER > 1200
 	_tfopen_s(&fp, szFileName, _T("wt"));
+#else
+	fp = _tfopen(szFileName, _T("tw"));
+#endif
 	int i, count = SendDlgItemMessage(hWnd, ID_LST_ICONS, LB_GETCOUNT, 0, 0);
 	for (i = 0; i < count; i++)
 	{
 		ListEntry* le = (ListEntry*) SendDlgItemMessage(hWnd, ID_LST_ICONS, LB_GETITEMDATA, i, 0);
+#if _MSC_VER > 1200
 		_ftprintf_s(fp, _T("%s\n"), le->szPath);
+#else
+		_ftprintf(fp, _T("%s\n"), le->szPath);
+#endif
 	}
 	fclose(fp);
 }
