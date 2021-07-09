@@ -21,8 +21,11 @@ CompositeMessageHandler::~CompositeMessageHandler()
 		delete x;
 	}
 #else
-	for (std::list<AbstractMessageHandler*>::iterator it = m_handlers.begin(); it != m_handlers.end(); it++) {
-		AbstractMessageHandler* handler = *it;
+	for (std::list<AbstractMessageHandler *>::iterator it = m_handlers.begin();
+		 it != m_handlers.end();
+		 it++)
+	{
+		AbstractMessageHandler *handler = *it;
 		delete handler;
 	}
 #endif
@@ -40,9 +43,13 @@ bool CompositeMessageHandler::Handle(LPMSG msg)
 		}
 	}
 #else
-	for (std::list<AbstractMessageHandler*>::iterator it = m_handlers.begin(); it != m_handlers.end(); it++) {
-		AbstractMessageHandler* handler = *it;
-		if (handler->Handle(msg)) {
+	for (std::list<AbstractMessageHandler *>::iterator it = m_handlers.begin();
+		 it != m_handlers.end();
+		 it++)
+	{
+		AbstractMessageHandler *handler = *it;
+		if (handler->Handle(msg))
+		{
 			return true;
 		}
 	}

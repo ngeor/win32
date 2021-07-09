@@ -1,7 +1,6 @@
 #if !defined(MESSAGE_HANDLERS_H)
 #define MESSAGE_HANDLERS_H
 
-
 #include <list>
 
 class AbstractMessageHandler
