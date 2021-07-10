@@ -21,3 +21,16 @@ backup/
 .vs/
 x64/
 *.user
+
+# Visual Studio C++ 6
+Debug/
+Release/
+*.ncb
+*.opt
+*.aps
+*.plg
+*.ilk
+*.pdb
+
+# Visual Studio Code
+.vscode/
