@@ -5,7 +5,7 @@ Y_DRIVE="/c/Users/ngeor/Projects"
 BUILD_ME="${Y_DRIVE}/BUILD_ME"
 BUILD_LOG="${Y_DRIVE}/BUILD.LOG"
 USERNAME="Nikolaos Georgiou"
-PASSWORD=
+PASSWORD=""
 
 function vm_state {
     "$VBoxManage" --nologo showvminfo "$VM_NAME" --machinereadable | grep 'VMState=' | cut -d= -f2 | tr -d \"
