@@ -2,14 +2,14 @@ $VBoxManage = "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe"
 $VMName = "W2KAgent"
 $VMUsername = "Nikolaos Georgiou"
 $VMPassword = ""
-$GuestFolder = MySite
-$GuestFolderAbsolute = C:\MySite
-$BuildLogFileName = build.log
+$GuestFolder = "MySite"
+$GuestFolderAbsolute = "C:\$GuestFolder"
+$BuildLogFileName = "build.log"
 # .e.g .\MySite\build.log
-$BuildLog = .\$GuestFolder\$BuildLogFileName
+$BuildLog = ".\$GuestFolder\$BuildLogFileName"
 # e.g. C:\MySite\build.log
-$BuildLogAbsolute = $GuestFolderAbsolute\$BuildLogFileName
-$SlnInGuest = $GuestFolderAbsolute\vc6.dsw
+$BuildLogAbsolute = "$GuestFolderAbsolute\$BuildLogFileName"
+$SlnInGuest = "$GuestFolderAbsolute\vc6.dsw"
 $MSDEV = "C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin\MSDEV.COM"
 
 function Get-VMState {
