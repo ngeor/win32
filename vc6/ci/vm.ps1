@@ -2,6 +2,15 @@ $VBoxManage = "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe"
 $VMName = "W2KAgent"
 $VMUsername = "Nikolaos Georgiou"
 $VMPassword = ""
+$GuestFolder = MySite
+$GuestFolderAbsolute = C:\MySite
+$BuildLogFileName = build.log
+# .e.g .\MySite\build.log
+$BuildLog = .\$GuestFolder\$BuildLogFileName
+# e.g. C:\MySite\build.log
+$BuildLogAbsolute = $GuestFolderAbsolute\$BuildLogFileName
+$SlnInGuest = $GuestFolderAbsolute\vc6.dsw
+$MSDEV = "C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin\MSDEV.COM"
 
 function Get-VMState {
     $Lines = $(& $VBoxManage --nologo showvminfo $VMName --machinereadable)
@@ -11,11 +20,14 @@ function Get-VMState {
 }
 
 function Start-VM {
+    Write-Host "Starting VM..."
     & $VBoxManage --nologo startvm $VMName --type headless
 }
 
 function Close-VM {
-    & $VBoxManage --nologo controlvm $VMName poweroff
+    Write-Host "Shutting down VM..."
+    # Somehow TeamCity sees the output of poweroff as a warning
+    & $VBoxManage --nologo controlvm $VMName poweroff | Out-Null
     & $VBoxManage --nologo snapshot $VMName restorecurrent
 }
 
@@ -44,7 +56,7 @@ function Copy-IntoVM {
             --username $VMUsername `
             --password `"$VMPassword`" `
             --recursive `
-            --target-directory C:\MySite `
+            --target-directory $GuestFolderAbsolute `
             .\vc6
         if ($?) {
             break
@@ -62,8 +74,8 @@ function Run-Build {
         --username $VMUsername `
         --password `"$VMPassword`" `
         --wait-stdout `
-        --exe "C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin\MSDEV.COM" `
-        -- "C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin\MSDEV.COM" C:\MySite\vc6.dsw /OUT C:\MySite\build.log /MAKE ALL /REBUILD | Out-Host
+        --exe $MSDEV `
+        -- $MSDEV $SlnInGuest /OUT $BuildLogAbsolute /MAKE ALL /REBUILD | Out-Host
     return $?
 }
 
@@ -76,7 +88,7 @@ function Copy-OutOfVM {
             --password `"$VMPassword`" `
             --recursive `
             --target-directory . `
-            C:\MySite
+            $GuestFolderAbsolute
         if ($?) {
             break
         }
@@ -86,14 +98,13 @@ function Copy-OutOfVM {
 }
 
 function Clear-OutputFolder {
-    if (Test-Path "MySite") {
-        del -Recurse -Force MySite
+    if (Test-Path $GuestFolder) {
+        del -Recurse -Force $GuestFolder
     }
 }
 
 $State = Get-VMState
 if ($State -eq "poweroff") {
-    echo "It is off"
     Start-VM
     Clear-OutputFolder
     Wait-VM
@@ -102,10 +113,10 @@ if ($State -eq "poweroff") {
     Copy-OutOfVM
     Close-VM
     if ($BuildSucceeded) {
-        cat .\MySite\build.log
+        cat $BuildLog
     } else {
         Write-Warning "Build failed, please check build log below"
-        cat .\MySite\build.log
+        cat $BuildLog
         Write-Warning "Build failed, please check build log above"
         exit 1
     }
