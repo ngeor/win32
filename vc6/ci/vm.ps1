@@ -31,7 +31,7 @@ function PowerOff-VM {
 
 function Close-VM {
     Write-Host "Shutting down VM..."
-    PowerOff-VM *>&1
+    PowerOff-VM *>&1 | Out-Null
     & $VBoxManage --nologo snapshot $VMName restorecurrent
 }
 
