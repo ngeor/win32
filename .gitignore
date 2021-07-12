@@ -34,3 +34,6 @@ Release/
 
 # Visual Studio Code
 .vscode/
+
+# folder where artifacts are copied from VM
+MySite/
