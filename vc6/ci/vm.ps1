@@ -26,12 +26,13 @@ function Start-VM {
 
 function PowerOff-VM {
     # Somehow TeamCity sees the output of poweroff as a warning
-    & $VBoxManage --nologo controlvm $VMName poweroff
+    $Ignored = $(& $VBoxManage --nologo controlvm $VMName poweroff)
+    $Ignored = ""
 }
 
 function Close-VM {
     Write-Host "Shutting down VM..."
-    PowerOff-VM *>&1 | Out-Null
+    PowerOff-VM
     & $VBoxManage --nologo snapshot $VMName restorecurrent
 }
 
