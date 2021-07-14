@@ -97,8 +97,19 @@ function Copy-OutOfVM {
     }
 }
 
+function Delete-Folders {
+    param (
+        [string[]] $Folders
+    )
+    foreach ($Folder in $Folders) {
+        if (Test-Path $Folder) {
+            del -Recurse -Force $Folder
+        }
+    }
+}
+
 function Clear-OutputFolder {
-    & git clean -fdx
+    Delete-Folders -Folders $GuestFolder, "vc6/x64"
 }
 
 $State = Get-VMState
