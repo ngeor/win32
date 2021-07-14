@@ -98,13 +98,7 @@ function Copy-OutOfVM {
 }
 
 function Clear-OutputFolder {
-    if (Test-Path $GuestFolder) {
-        del -Recurse -Force $GuestFolder
-    }
-    # delete x64 folder if present
-    if (Test-Path "x64") {
-        del -Recurse -Force "x64"
-    }
+    & git clean -fdx
 }
 
 $State = Get-VMState
