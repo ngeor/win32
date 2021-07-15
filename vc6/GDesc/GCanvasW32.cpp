@@ -71,9 +71,14 @@ void GCanvasW32::Rectangle(int x1, int y1, int x2, int y2)
 	::Rectangle(FHandle, x1, y1, x2, y2);
 }
 
+int GetStringLength(LPCTSTR string, int length) {
+#pragma warning(suppress: 4267) // suppress warning about casting size_t to int
+	return length >= 0 ? length : _tcslen(string);
+}
+
 void GCanvasW32::TextOut(LPCTSTR string, int length, int x, int y)
 {
-	::TextOut(FHandle, x, y, string, (length == -1) ? _tcslen(string) : length);
+	::TextOut(FHandle, x, y, string, GetStringLength(string, length));
 }
 
 BOOL GCanvasW32::IsTextTransparent()
@@ -89,7 +94,7 @@ void GCanvasW32::SetTextTransparent(BOOL fTransparent)
 void GCanvasW32::GetTextExtent(LPCTSTR szBuf, int length, int *cx, int *cy)
 {
 	SIZE sz;
-	::GetTextExtentPoint32(FHandle, szBuf, (length == -1) ? _tcslen(szBuf) : length, &sz);
+	::GetTextExtentPoint32(FHandle, szBuf, GetStringLength(szBuf, length), &sz);
 	*cx = sz.cx;
 	*cy = sz.cy;
 }
