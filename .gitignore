@@ -37,3 +37,9 @@ Release/
 
 # folder where artifacts are copied from VM
 MySite/
+
+# Custom path for Visual Studio C++ 6 output files
+i386/
+
+# Output for Doxygen
+docs/
