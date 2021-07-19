@@ -3,12 +3,16 @@
 #include "StdAfx.h"
 #include "App.h"
 #include "MainWindow.h"
+#include "..\WinObj\WinObj.h"
 
 int APIENTRY WinMain(HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR lpCmdLine,
 					 int nCmdShow)
 {
+	// new style app
+	WinObj::CInstance app2(hInstance);
+
 	// Create app instance
 	App app(hInstance);
 
