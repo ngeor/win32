@@ -8,6 +8,13 @@
 
 #define MYCLASSNAME _T("VISITREECLASS")
 
+class MyDialog : public WinObj::CDialog
+{
+public:
+	MyDialog(HWND hWnd) : WinObj::CDialog(hWnd) {}
+	virtual ~MyDialog() {}
+};
+
 int APIENTRY WinMain(HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR lpCmdLine,
@@ -24,6 +31,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		.WithSmallIcon(IDI_SMALL)
 		.WithMenu(IDC_VISITREE)
 		.Register(app2);
+
+	// new style window creation
+	MyDialog *mainWindow2 = WinObj::BuildDialog<MyDialog>(app2, IDD_MAIN);
+	mainWindow2->Show();
+	// TODO instance management
+	delete mainWindow2;
 
 	// Create app instance
 	App app(hInstance);

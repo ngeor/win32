@@ -1,0 +1,27 @@
+// Wnd.cpp: implementation of the CWnd class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "Wnd.h"
+
+namespace WinObj
+{
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CWnd::CWnd(HWND hWnd) : CHandle<HWND>(hWnd)
+{
+}
+
+CWnd::~CWnd()
+{
+}
+
+void CWnd::Show()
+{
+	::ShowWindow(GetHandle(), SW_SHOWNORMAL);
+}
+
+} // namespace WinObj

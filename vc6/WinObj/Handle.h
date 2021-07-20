@@ -24,6 +24,7 @@ public:
 	{
 	}
 
+	// TODO remove or at least reduce visibility
 	T GetHandle() const
 	{
 		return _handle;
