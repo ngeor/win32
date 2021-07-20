@@ -4,6 +4,9 @@
 #include "App.h"
 #include "MainWindow.h"
 #include "..\WinObj\WinObj.h"
+#include "resource.h"
+
+#define MYCLASSNAME _T("VISITREECLASS")
 
 int APIENTRY WinMain(HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
@@ -12,6 +15,15 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 {
 	// new style app
 	WinObj::CInstance app2(hInstance);
+
+	// new style window class registration
+	WinObj::CWindowClass()
+		.Dialog()
+		.WithClassName(MYCLASSNAME)
+		.WithIcon(IDI_VISITREE)
+		.WithSmallIcon(IDI_SMALL)
+		.WithMenu(IDC_VISITREE)
+		.Register(app2);
 
 	// Create app instance
 	App app(hInstance);

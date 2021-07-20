@@ -24,7 +24,7 @@ public:
 	{
 	}
 
-	T GetHandle()
+	T GetHandle() const
 	{
 		return _handle;
 	}
