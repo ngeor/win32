@@ -35,8 +35,14 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	// new style window creation
 	MyDialog *mainWindow2 = WinObj::BuildDialog<MyDialog>(app2, IDD_MAIN);
 	mainWindow2->Show();
+
+	// new style app loop
+	WinObj::CDialogMessageLoop messageLoop(*mainWindow2);
+	WPARAM result = messageLoop.Run();
+
 	// TODO instance management
 	delete mainWindow2;
+	return result;
 
 	// Create app instance
 	App app(hInstance);

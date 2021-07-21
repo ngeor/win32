@@ -24,4 +24,9 @@ void CWnd::Show()
 	::ShowWindow(GetHandle(), SW_SHOWNORMAL);
 }
 
+bool CWnd::IsDialogMessage(LPMSG msg)
+{
+	return ::IsDialogMessage(GetHandle(), msg) != 0;
+}
+
 } // namespace WinObj

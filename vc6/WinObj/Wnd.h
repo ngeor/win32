@@ -19,6 +19,7 @@ public:
 	CWnd(HWND hWnd);
 	virtual ~CWnd();
 	void Show();
+	bool IsDialogMessage(LPMSG msg);
 };
 } // namespace WinObj
 #endif // !defined(AFX_WND_H__93530528_8038_459B_9C73_D156D73F67BA__INCLUDED_)

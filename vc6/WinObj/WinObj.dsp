@@ -89,7 +89,15 @@ SOURCE=.\Dialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DialogMessageLoop.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Instance.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MessageLoop.cpp
 # End Source File
 # Begin Source File
 
@@ -114,11 +122,19 @@ SOURCE=.\Dialog.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\DialogMessageLoop.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Handle.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\Instance.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MessageLoop.h
 # End Source File
 # Begin Source File
 
