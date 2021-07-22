@@ -18,6 +18,7 @@ class CInstance : public CHandle<HINSTANCE>
 public:
 	CInstance(HINSTANCE instance);
 	virtual ~CInstance();
+	LPTSTR LoadString(int id) const;
 };
 } // namespace WinObj
 

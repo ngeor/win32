@@ -10,12 +10,17 @@ namespace WinObj
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDialog::CDialog(HWND hWnd) : CWnd(hWnd)
+CDialog::CDialog(const CInstance& instance, HWND hWnd) : CWnd(hWnd), _instance(instance)
 {
 }
 
 CDialog::~CDialog()
 {
+}
+
+const CInstance& CDialog::GetInstance() const
+{
+	return _instance;
 }
 
 LRESULT CALLBACK __InternalDialogBootstrapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

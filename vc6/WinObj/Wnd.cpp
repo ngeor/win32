@@ -29,4 +29,15 @@ bool CWnd::IsDialogMessage(LPMSG msg)
 	return ::IsDialogMessage(GetHandle(), msg) != 0;
 }
 
+bool CWnd::MoveDlgItem(int dlgItem, int x, int y, int width, int height, bool repaint)
+{
+	HWND hChildWnd = ::GetDlgItem(GetHandle(), dlgItem);
+	if (hChildWnd)
+	{
+		return ::MoveWindow(hChildWnd, x, y, width, height, repaint) != 0;
+	} else {
+		return false;
+	}
+}
+
 } // namespace WinObj

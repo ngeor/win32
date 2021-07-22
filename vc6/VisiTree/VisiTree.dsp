@@ -96,15 +96,7 @@ SOURCE=.\About.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AbstractDialog.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\AbstractTree.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\App.cpp
 # End Source File
 # Begin Source File
 
@@ -117,10 +109,6 @@ SOURCE=.\BinarySearchTree.cpp
 # Begin Source File
 
 SOURCE=.\MainWindow.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\MessageHandlers.cpp
 # End Source File
 # Begin Source File
 
@@ -157,15 +145,7 @@ SOURCE=.\About.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AbstractDialog.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\AbstractTree.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\App.h
 # End Source File
 # Begin Source File
 
@@ -178,10 +158,6 @@ SOURCE=.\BinarySearchTree.h
 # Begin Source File
 
 SOURCE=.\MainWindow.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\MessageHandlers.h
 # End Source File
 # Begin Source File
 

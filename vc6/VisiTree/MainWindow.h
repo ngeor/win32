@@ -1,13 +1,11 @@
 #if !defined MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "App.h"
-#include "MessageHandlers.h"
+#include "..\WinObj\WinObj.h"
 #include "AbstractTree.h"
 #include "TreeFactory.h"
-#include "AbstractDialog.h"
 
-class MainWindow : public AbstractDialog
+class MainWindow : public WinObj::CDialog
 {
 private:
 	TreeFactory treeFactory;
@@ -24,9 +22,9 @@ private:
 	void SizeControls();
 
 public:
-	MainWindow(App &app);
+	MainWindow(const WinObj::CInstance& instance, HWND hWnd);
 	virtual ~MainWindow();
-	virtual LRESULT WndProc(UINT, WPARAM, LPARAM) OVERRIDE;
+	virtual LRESULT OnMessage(UINT, WPARAM, LPARAM) OVERRIDE;
 };
 
 #endif
