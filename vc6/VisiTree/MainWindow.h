@@ -22,7 +22,7 @@ private:
 	void SizeControls();
 
 public:
-	MainWindow(const WinObj::CInstance& instance, HWND hWnd);
+	MainWindow(const WinObj::CInstance &instance, HWND hWnd);
 	virtual ~MainWindow();
 	virtual LRESULT OnMessage(UINT, WPARAM, LPARAM) OVERRIDE;
 };

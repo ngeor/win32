@@ -35,7 +35,9 @@ bool CWnd::MoveDlgItem(int dlgItem, int x, int y, int width, int height, bool re
 	if (hChildWnd)
 	{
 		return ::MoveWindow(hChildWnd, x, y, width, height, repaint) != 0;
-	} else {
+	}
+	else
+	{
 		return false;
 	}
 }

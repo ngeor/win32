@@ -4,7 +4,8 @@
 #include "Render.h"
 #include "resource.h"
 
-MainWindow::MainWindow(const WinObj::CInstance& instance, HWND hWnd) : WinObj::CDialog(instance, hWnd) 
+MainWindow::MainWindow(const WinObj::CInstance &instance, HWND hWnd)
+	: WinObj::CDialog(instance, hWnd)
 {
 	myTree = treeFactory.Create(TreeTypeSearch, KeyTypeInteger);
 }
@@ -178,8 +179,9 @@ void MainWindow::OnAdd()
 			len = GetWindowTextLength(GetDlgItem(GetHandle(), ID_INPUT)) + 1;
 			if (len > 0)
 			{
-				data.s  = (LPTSTR)malloc(sizeof(TCHAR) * len);
-				success = GetDlgItemText(GetHandle(), ID_INPUT, data.s, len) != 0;
+				data.s = (LPTSTR)malloc(sizeof(TCHAR) * len);
+				success =
+					GetDlgItemText(GetHandle(), ID_INPUT, data.s, len) != 0;
 			}
 			break;
 	}
@@ -300,14 +302,15 @@ int CbSetItemData(HWND hWnd, int id, int index, LPARAM data)
  * by adding the offset 100
  * (e.g. KeyTypeInteger = 1 has the corresponding string ID = 101)
  */
-void CbAddKeyType(const WinObj::CInstance& instance, HWND hWnd, int keyType)
-{	
+void CbAddKeyType(const WinObj::CInstance &instance, HWND hWnd, int keyType)
+{
 	const int STRING_OFFSET = 100;
-	LPTSTR buffer = instance.LoadString(STRING_OFFSET + keyType);
-	LPCTSTR msg = buffer ? buffer : _T("Failed to load string");
+	LPTSTR buffer           = instance.LoadString(STRING_OFFSET + keyType);
+	LPCTSTR msg             = buffer ? buffer : _T("Failed to load string");
 	CbSetItemData(
 		hWnd, ID_KEYTYPE, CbAddString(hWnd, ID_KEYTYPE, msg), keyType);
-	if (buffer) {
+	if (buffer)
+	{
 		free(buffer);
 	}
 }

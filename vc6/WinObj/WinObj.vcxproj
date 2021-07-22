@@ -151,16 +151,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Dialog.h" />
+    <ClInclude Include="DialogMessageLoop.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Handle.h" />
+    <ClInclude Include="Instance.h" />
+    <ClInclude Include="MessageLoop.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="WindowClass.h" />
+    <ClInclude Include="WinObj.h" />
+    <ClInclude Include="Wnd.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="DialogMessageLoop.cpp" />
+    <ClCompile Include="Instance.cpp" />
+    <ClCompile Include="MessageLoop.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="WindowClass.cpp" />
+    <ClCompile Include="Wnd.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,11 +17,12 @@ namespace WinObj
 class CDialog : public CWnd
 {
 	const CInstance &_instance;
+
 public:
 	CDialog(const CInstance &instance, HWND hWnd);
 	virtual ~CDialog();
 	virtual LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
-	const CInstance& GetInstance() const;
+	const CInstance &GetInstance() const;
 };
 
 LRESULT CALLBACK __InternalDialogBootstrapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -33,12 +34,14 @@ template <typename T> T *BuildDialog(const CInstance &instance, int dialog)
 	{
 		return NULL;
 	}
-	T *wnd    = new T(instance, hWnd);
+	T *wnd = new T(instance, hWnd);
 #if _MSC_VER > 1200
 	SetWindowLongPtr(hWnd, GWLP_USERDATA, (LPARAM)wnd);
 #else
 	SetWindowLong(hWnd, GWL_USERDATA, (LPARAM)wnd);
 #endif
+	// need to call this because WM_INITDIALOG was already called by Windows and the CDialog missed it
+	wnd->OnMessage(WM_INITDIALOG, 0, 0);
 	return wnd;
 }
 

@@ -13,8 +13,8 @@
 #define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
 
 #include <windows.h>
-#include <tchar.h>
 #include <malloc.h>
+#include <tchar.h>
 
 // TODO: reference additional headers your program requires here
 
