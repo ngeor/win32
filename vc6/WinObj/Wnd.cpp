@@ -47,7 +47,7 @@ bool CWnd::GetClientRect(LPRECT rect)
 	return ::GetClientRect(GetHandle(), rect);
 }
 
-bool CWnd::InvalidateRect(LPRECT rect = NULL, bool repaint = true)
+bool CWnd::InvalidateRect(LPRECT rect, bool repaint)
 {
 	return ::InvalidateRect(GetHandle(), rect, repaint);
 }

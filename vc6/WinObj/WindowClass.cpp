@@ -60,9 +60,9 @@ void CWindowClass::Register(const CInstance &instance)
 	_wcex.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(_icon));
 	_wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
 	_wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	_wcex.lpszMenuName  = (LPCTSTR)_menu;
+	_wcex.lpszMenuName  = MAKEINTRESOURCE(_menu);
 	_wcex.lpszClassName = _className;
-	_wcex.hIconSm       = LoadIcon(hInstance, (LPCTSTR)_smallIcon);
+	_wcex.hIconSm       = LoadIcon(hInstance, MAKEINTRESOURCE(_smallIcon));
 	RegisterClassEx(&_wcex);
 }
 
