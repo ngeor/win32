@@ -42,4 +42,9 @@ bool CWnd::MoveDlgItem(int dlgItem, int x, int y, int width, int height, bool re
 	}
 }
 
+bool CWnd::GetClientRect(LPRECT rect)
+{
+	return ::GetClientRect(GetHandle(), rect);
+}
+
 } // namespace WinObj

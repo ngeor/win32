@@ -19,7 +19,7 @@ void MainWindow::SizeControls()
 {
 	RECT rt;
 	int i;
-	GetClientRect(GetHandle(), &rt);
+	GetClientRect(&rt);
 	MoveDlgItem(ID_INPUT, 0, rt.bottom - 40, rt.right - 300, 20);
 	MoveDlgItem(ID_ADD, rt.right - 300, rt.bottom - 40, 100, 20);
 	MoveDlgItem(ID_FREE, rt.right - 200, rt.bottom - 40, 100, 20);
