@@ -419,7 +419,7 @@ LRESULT MainWindow::OnMessage(UINT message, WPARAM wParam, LPARAM lParam)
 			RECT rt;
 
 			BeginPaint(GetHandle(), &ps);
-			GetClientRect(GetHandle(), &rt);
+			GetClientRect(&rt);
 			rt.bottom -= 39;
 			rt.right++;
 			render(myTree, &rt, ps.hdc);

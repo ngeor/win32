@@ -57,7 +57,7 @@ void CWindowClass::Register(const CInstance &instance)
 {
 	HINSTANCE hInstance = instance.GetHandle();
 	_wcex.hInstance     = hInstance;
-	_wcex.hIcon         = LoadIcon(hInstance, (LPCTSTR)_icon);
+	_wcex.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(_icon));
 	_wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
 	_wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	_wcex.lpszMenuName  = (LPCTSTR)_menu;
