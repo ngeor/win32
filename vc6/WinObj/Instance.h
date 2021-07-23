@@ -13,6 +13,7 @@
 
 namespace WinObj
 {
+/// Encapsulates the HINSTANCE handle.
 class CInstance : public CHandle<HINSTANCE>
 {
 public:

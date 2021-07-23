@@ -14,6 +14,7 @@
 
 namespace WinObj
 {
+/// A message loop for an app that has a dialog as its main window.
 class CDialogMessageLoop : public CMessageLoop
 {
 	CDialog &_dialog;

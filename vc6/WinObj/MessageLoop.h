@@ -11,6 +11,7 @@
 
 namespace WinObj
 {
+/// Provides the message loop for an application.
 class CMessageLoop
 {
 public:
@@ -19,6 +20,8 @@ public:
 	WPARAM Run();
 
 protected:
+    /// Checks if the given message is already processed.
+    /// If this method returns true, the message will not be dispatched.
 	virtual bool IsMessageProcessed(LPMSG msg);
 };
 } // namespace WinObj

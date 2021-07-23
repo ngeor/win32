@@ -13,6 +13,7 @@
 
 namespace WinObj
 {
+/// Builder object for a window class (WNDCLASSEX).
 class CWindowClass
 {
 	WNDCLASSEX _wcex;

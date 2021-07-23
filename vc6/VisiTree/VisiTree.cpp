@@ -12,27 +12,27 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 					 LPSTR lpCmdLine,
 					 int nCmdShow)
 {
-	// new style app
-	WinObj::CInstance app2(hInstance);
+	// app wraps the current `hInstance`
+	WinObj::CInstance app(hInstance);
 
-	// new style window class registration
+	// register window class
 	WinObj::CWindowClass()
 		.Dialog()
 		.WithClassName(MYCLASSNAME)
 		.WithIcon(IDI_VISITREE)
 		.WithSmallIcon(IDI_SMALL)
 		.WithMenu(IDC_VISITREE)
-		.Register(app2);
+		.Register(app);
 
-	// new style window creation
-	MainWindow *mainWindow2 = WinObj::BuildDialog<MainWindow>(app2, IDD_MAIN);
-	mainWindow2->Show();
+	// create the main window
+	MainWindow *mainWindow = WinObj::BuildDialog<MainWindow>(app, IDD_MAIN);
+	mainWindow->Show();
 
-	// new style app loop
-	WinObj::CDialogMessageLoop messageLoop(*mainWindow2);
+	// message loop
+	WinObj::CDialogMessageLoop messageLoop(*mainWindow);
 	WPARAM result = messageLoop.Run();
 
-	// TODO instance management
-	delete mainWindow2;
+	// TODO improve instance management
+	delete mainWindow;
 	return result;
 }

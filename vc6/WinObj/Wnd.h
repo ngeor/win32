@@ -13,13 +13,17 @@
 
 namespace WinObj
 {
+/// Encapsulates a HWND handle.
 class CWnd : public CHandle<HWND>
 {
 public:
 	CWnd(HWND hWnd);
 	virtual ~CWnd();
+
 	void Show();
+
 	bool IsDialogMessage(LPMSG msg);
+
 	bool MoveDlgItem(int dlgItem, int x, int y, int width, int height, bool repaint = true);
 
 	/// Gets the client bounds of the window.

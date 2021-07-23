@@ -14,6 +14,7 @@
 
 namespace WinObj
 {
+/// Encapsulates a dialog window.
 class CDialog : public CWnd
 {
 	const CInstance &_instance;
@@ -21,12 +22,18 @@ class CDialog : public CWnd
 public:
 	CDialog(const CInstance &instance, HWND hWnd);
 	virtual ~CDialog();
+
+    /// Message handler for the dialog.
 	virtual LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
+
+    /// Gets the application instance.
 	const CInstance &GetInstance() const;
 };
 
 LRESULT CALLBACK __InternalDialogBootstrapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+/// Creates a new dialog. The typename T must derive from CDialog and have a constructor
+/// accepting one CInstance and a HWND handle (just like the constructor of CDialog).
 template <typename T> T *BuildDialog(const CInstance &instance, int dialog)
 {
 	HWND hWnd =
