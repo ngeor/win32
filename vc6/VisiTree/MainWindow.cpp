@@ -74,7 +74,7 @@ void MainWindow::OpenTreeFile(LPCTSTR szFile)
 	}
 
 	fclose(fp);
-	InvalidateRect(GetHandle(), NULL, TRUE);
+	InvalidateRect();
 }
 
 void ReplaceFilter(LPTSTR filter)
@@ -145,30 +145,30 @@ void MainWindow::OnSaveMetafile()
 
 void MainWindow::OnAdd()
 {
-	BOOL success;
+	bool success;
 	key data;
-	success = FALSE;
+	success = false;
 	int len;
 
 	switch (myTree->GetKeyType())
 	{
 		case KeyTypeChar:
 			TCHAR buf[2];
-			if (success = (GetDlgItemText(GetHandle(), ID_INPUT, buf, 2) != 0))
+			if (success = (GetDlgItemText(ID_INPUT, buf, 2) != 0))
 				data.c = buf[0];
 			break;
 
 		case KeyTypeInteger:
-			data.i = (int)GetDlgItemInt(GetHandle(), ID_INPUT, &success, TRUE);
+			data.i = (int)GetDlgItemInt(ID_INPUT, &success, true);
 			break;
 
 		case KeyTypeFloat:
 			LPTSTR s;
-			len = GetWindowTextLength(GetDlgItem(GetHandle(), ID_INPUT)) + 1;
+			len = GetDlgItemTextLength(ID_INPUT) + 1;
 			if (len > 0)
 			{
 				s       = (LPTSTR)malloc(sizeof(TCHAR) * len);
-				success = GetDlgItemText(GetHandle(), ID_INPUT, s, len) != 0;
+				success = GetDlgItemText(ID_INPUT, s, len) != 0;
 				_stscanf_s(s, _T("%f"), &data.f);
 				free(s);
 			}
@@ -176,12 +176,11 @@ void MainWindow::OnAdd()
 			break;
 
 		case KeyTypeString:
-			len = GetWindowTextLength(GetDlgItem(GetHandle(), ID_INPUT)) + 1;
+			len = GetDlgItemTextLength(ID_INPUT) + 1;
 			if (len > 0)
 			{
-				data.s = (LPTSTR)malloc(sizeof(TCHAR) * len);
-				success =
-					GetDlgItemText(GetHandle(), ID_INPUT, data.s, len) != 0;
+				data.s  = (LPTSTR)malloc(sizeof(TCHAR) * len);
+				success = GetDlgItemText(ID_INPUT, data.s, len) != 0;
 			}
 			break;
 	}
@@ -189,11 +188,10 @@ void MainWindow::OnAdd()
 	if (success)
 	{
 		myTree->Add(data);
-		InvalidateRect(GetHandle(), NULL, TRUE);
+		InvalidateRect();
 	}
 
-	SendDlgItemMessage(
-		GetHandle(), ID_INPUT, EM_SETSEL, 0, -1); // select everything
+	SendDlgItemMessage(ID_INPUT, EM_SETSEL, 0, -1); // select everything
 }
 
 void MainWindow::KeyTypeChanged(KeyType keyType)
@@ -201,14 +199,13 @@ void MainWindow::KeyTypeChanged(KeyType keyType)
 	int i, j;
 
 	/* Refresh combo box */
-	j = SendDlgItemMessage(GetHandle(), ID_KEYTYPE, CB_GETCOUNT, 0, 0);
+	j = SendDlgItemMessage(ID_KEYTYPE, CB_GETCOUNT, 0, 0);
 	i = 0;
-	while ((i < j) &&
-		   (keyType != (char)SendDlgItemMessage(
-						   GetHandle(), ID_KEYTYPE, CB_GETITEMDATA, i, 0)))
+	while ((i < j) && (keyType != (char)SendDlgItemMessage(
+									  ID_KEYTYPE, CB_GETITEMDATA, i, 0)))
 		i++;
 	if (i < j)
-		SendDlgItemMessage(GetHandle(), ID_KEYTYPE, CB_SETCURSEL, i, 0);
+		SendDlgItemMessage(ID_KEYTYPE, CB_SETCURSEL, i, 0);
 
 	/* Refresh Menu Items */
 	/* Remember that the order is char, int, float, string */
@@ -243,7 +240,7 @@ void MainWindow::SetKeyType(KeyType keyType)
 	myTree                = treeFactory.Create(oldTree->GetTreeType(), keyType);
 	delete oldTree;
 	KeyTypeChanged(keyType);
-	InvalidateRect(GetHandle(), NULL, TRUE);
+	InvalidateRect();
 }
 
 void MainWindow::TreeTypeChanged(TreeType treeType)
@@ -277,38 +274,25 @@ void MainWindow::SetTreeType(TreeType treeType)
 	myTree                = treeFactory.Create(treeType, oldTree->GetKeyType());
 	delete oldTree;
 	TreeTypeChanged(treeType);
-	InvalidateRect(GetHandle(), NULL, TRUE);
+	InvalidateRect();
 }
 
-// Adds a string to the combo box.
-int CbAddString(HWND hWnd, int id, LPCTSTR string)
+int MainWindow::CbAddString(int id, LPCTSTR string)
 {
-	return SendDlgItemMessage(hWnd, id, CB_ADDSTRING, 0, (LPARAM)string);
+	return SendDlgItemMessage(id, CB_ADDSTRING, 0, (LPARAM)string);
 }
 
-// Sets item data on a item in the combo box.
-int CbSetItemData(HWND hWnd, int id, int index, LPARAM data)
+int MainWindow::CbSetItemData(int id, int index, LPARAM data)
 {
-	return SendDlgItemMessage(hWnd, id, CB_SETITEMDATA, index, data);
+	return SendDlgItemMessage(id, CB_SETITEMDATA, index, data);
 }
 
-/**
- * Adds an entry to the key type drop down box.
- *
- * The entry is specified by the keyType, which needs to be one of the values
- * defined in Node.h, such as KeyTypeInteger.
- *
- * The text value comes from a string table. The IDs are mapped to the key type
- * by adding the offset 100
- * (e.g. KeyTypeInteger = 1 has the corresponding string ID = 101)
- */
-void CbAddKeyType(const WinObj::CInstance &instance, HWND hWnd, int keyType)
+void MainWindow::CbAddKeyType(int keyType)
 {
 	const int STRING_OFFSET = 100;
-	LPTSTR buffer           = instance.LoadString(STRING_OFFSET + keyType);
+	LPTSTR buffer           = GetInstance().LoadString(STRING_OFFSET + keyType);
 	LPCTSTR msg             = buffer ? buffer : _T("Failed to load string");
-	CbSetItemData(
-		hWnd, ID_KEYTYPE, CbAddString(hWnd, ID_KEYTYPE, msg), keyType);
+	CbSetItemData(ID_KEYTYPE, CbAddString(ID_KEYTYPE, msg), keyType);
 	if (buffer)
 	{
 		free(buffer);
@@ -329,14 +313,14 @@ LRESULT MainWindow::OnCommand(UINT message, WPARAM wParam, LPARAM lParam)
 					  (DLGPROC)About);
 			break;
 		case ID_EXIT:
-			DestroyWindow(GetHandle());
+			DestroyWindow();
 			break;
 		case ID_ADD:
 			OnAdd();
 			break;
 		case ID_FREE:
 			myTree->Clear();
-			InvalidateRect(GetHandle(), NULL, TRUE);
+			InvalidateRect();
 			break;
 		case ID_OPENFILE:
 			OnOpenTreeFile();
@@ -396,10 +380,10 @@ LRESULT MainWindow::OnMessage(UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 		case WM_INITDIALOG:
-			CbAddKeyType(GetInstance(), GetHandle(), KeyTypeInteger);
-			CbAddKeyType(GetInstance(), GetHandle(), KeyTypeFloat);
-			CbAddKeyType(GetInstance(), GetHandle(), KeyTypeChar);
-			CbAddKeyType(GetInstance(), GetHandle(), KeyTypeString);
+			CbAddKeyType(KeyTypeInteger);
+			CbAddKeyType(KeyTypeFloat);
+			CbAddKeyType(KeyTypeChar);
+			CbAddKeyType(KeyTypeString);
 
 			KeyTypeChanged(myTree->GetKeyType());
 			TreeTypeChanged(myTree->GetTreeType());
@@ -412,18 +396,18 @@ LRESULT MainWindow::OnMessage(UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_COMMAND:
 			return OnCommand(message, wParam, lParam);
 		case WM_CLOSE:
-			DestroyWindow(GetHandle());
+			DestroyWindow();
 			break;
 		case WM_PAINT:
 			PAINTSTRUCT ps;
 			RECT rt;
 
-			BeginPaint(GetHandle(), &ps);
+			BeginPaint(&ps);
 			GetClientRect(&rt);
 			rt.bottom -= 39;
 			rt.right++;
 			render(myTree, &rt, ps.hdc);
-			EndPaint(GetHandle(), &ps);
+			EndPaint(&ps);
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);

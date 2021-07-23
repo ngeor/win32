@@ -47,4 +47,55 @@ bool CWnd::GetClientRect(LPRECT rect)
 	return ::GetClientRect(GetHandle(), rect);
 }
 
+bool CWnd::InvalidateRect(LPRECT rect = NULL, bool repaint = true)
+{
+	return ::InvalidateRect(GetHandle(), rect, repaint);
+}
+
+bool CWnd::DestroyWindow()
+{
+	return ::DestroyWindow(GetHandle());
+}
+
+HDC CWnd::BeginPaint(LPPAINTSTRUCT ps)
+{
+	return ::BeginPaint(GetHandle(), ps);
+}
+
+bool CWnd::EndPaint(LPPAINTSTRUCT ps)
+{
+	return ::EndPaint(GetHandle(), ps);
+}
+
+UINT CWnd::GetDlgItemText(int id, LPTSTR buffer, int maxCharacters)
+{
+	return ::GetDlgItemText(GetHandle(), id, buffer, maxCharacters);
+}
+
+UINT CWnd::GetDlgItemInt(int id, bool *translated, bool bSigned)
+{
+	BOOL bTranslated;
+	UINT result = ::GetDlgItemInt(GetHandle(), id, &bTranslated, bSigned);
+	*translated = bTranslated != 0;
+	return result;
+}
+
+int CWnd::GetDlgItemTextLength(int id)
+{
+	HWND hChild = ::GetDlgItem(GetHandle(), id);
+	if (hChild != NULL)
+	{
+		return ::GetWindowTextLength(hChild);
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+LRESULT CWnd::SendDlgItemMessage(int id, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return ::SendDlgItemMessage(GetHandle(), id, msg, wParam, lParam);
+}
+
 } // namespace WinObj

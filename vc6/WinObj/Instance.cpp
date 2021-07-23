@@ -31,7 +31,7 @@ LPTSTR CInstance::LoadString(int id) const
 	_tcsncpy_s(result, len + 1, readOnlyBuffer, len);
 #else
 	TCHAR buffer[256];
-	int len = ::LoadString(hInstance, id, buffer, 256);
+	int len       = ::LoadString(hInstance, id, buffer, 256);
 	LPTSTR result = (LPTSTR)calloc(sizeof(TCHAR), len + 1);
 	_tcsncpy(result, buffer, len);
 #endif

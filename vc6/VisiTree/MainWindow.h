@@ -21,6 +21,24 @@ private:
 	LRESULT OnCommand(UINT message, WPARAM wParam, LPARAM lParam);
 	void SizeControls();
 
+	/**
+	 * Adds an entry to the key type drop down box.
+	 *
+	 * The entry is specified by the keyType, which needs to be one of the
+	 * values defined in Node.h, such as KeyTypeInteger.
+	 *
+	 * The text value comes from a string table. The IDs are mapped to the key
+	 * type by adding the offset 100 (e.g. KeyTypeInteger = 1 has the
+	 * corresponding string ID = 101)
+	 */
+	void CbAddKeyType(int keyType);
+
+	/// Adds a string to the combo box.
+	int CbAddString(int id, LPCTSTR string);
+
+	/// Sets item data on a item in the combo box.
+	int CbSetItemData(int id, int index, LPARAM data);
+
 public:
 	MainWindow(const WinObj::CInstance &instance, HWND hWnd);
 	virtual ~MainWindow();

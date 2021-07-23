@@ -18,6 +18,10 @@ class CInstance : public CHandle<HINSTANCE>
 public:
 	CInstance(HINSTANCE instance);
 	virtual ~CInstance();
+
+	/// Loads the specified string from resources.
+	/// The memory is allocated with `calloc`, so the
+	/// caller must use `free` when the string is no longer needed.
 	LPTSTR LoadString(int id) const;
 };
 } // namespace WinObj

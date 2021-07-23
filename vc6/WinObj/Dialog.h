@@ -29,7 +29,8 @@ LRESULT CALLBACK __InternalDialogBootstrapProc(HWND hWnd, UINT message, WPARAM w
 
 template <typename T> T *BuildDialog(const CInstance &instance, int dialog)
 {
-	HWND hWnd = CreateDialogParam(instance.GetHandle(), MAKEINTRESOURCE(dialog), 0, (DLGPROC)__InternalDialogBootstrapProc, 0);
+	HWND hWnd =
+		CreateDialogParam(instance.GetHandle(), MAKEINTRESOURCE(dialog), 0, (DLGPROC)__InternalDialogBootstrapProc, 0);
 	if (!hWnd)
 	{
 		return NULL;
