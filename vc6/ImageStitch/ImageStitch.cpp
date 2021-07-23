@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "resource.h"
 
+#include "..\WinObj\WinObj.h"
+
 #define ID_TOOLBAR       500
 #define ID_CMD_NEW_FILE  501
 #define ID_CMD_OPEN_FILE 502
@@ -523,6 +525,7 @@ LPARAM CALLBACK MainDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	WinObj::CInstance app(hInstance);
 	hInst = hInstance;
 	DialogBoxParam(hInstance, (LPCTSTR)IDD_MAIN, 0, (DLGPROC)MainDlgProc, (LPARAM)lpCmdLine);
 	return 0;
