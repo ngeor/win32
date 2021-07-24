@@ -77,69 +77,34 @@ void MainWindow::OpenTreeFile(LPCTSTR szFile)
 	InvalidateRect();
 }
 
-void ReplaceFilter(LPTSTR filter)
-{
-	while (*filter)
-	{
-		if (*filter == '|')
-			*filter = '\0';
-		filter++;
-	}
-}
-
 void MainWindow::OnOpenTreeFile()
 {
-	OPENFILENAME of;
-	LPTSTR pfilter = GetInstance().LoadString(IDS_OPEN_FILTER);
-	ReplaceFilter(pfilter);
-
-	memset(&of, 0, sizeof(of));
-	of.lStructSize  = sizeof(of);
-	of.hwndOwner    = GetHandle();
-	of.Flags        = OFN_HIDEREADONLY | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
-	of.lpstrFile    = (LPTSTR)calloc(MAX_PATH, sizeof(TCHAR));
-	of.nMaxFile     = MAX_PATH;
-	of.lpstrDefExt  = _T("emf");
-	of.lpstrFilter  = pfilter;
-
-	if (GetOpenFileName(&of))
+	WinObj::COpenFileName of(GetInstance(), *this);
+	of.WithFilter(IDS_OPEN_FILTER)
+		.WithDefaultExtension(_T("emf"))
+		.WithFlags(OFN_HIDEREADONLY | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST);
+	if (of.GetOpenFileName())
 	{
-		OpenTreeFile(of.lpstrFile);
+		OpenTreeFile(of.GetFile());
 	}
-
-	free(of.lpstrFile);
-	free(pfilter);
 }
 
 void MainWindow::OnSaveMetafile()
 {
-	OPENFILENAME of;
-
 	if (myTree->GetRoot() == NULL)
 	{
 		return;
 	}
 
-	LPTSTR pfilter = GetInstance().LoadString(IDS_OPEN_FILTER);
-	ReplaceFilter(pfilter);
+	WinObj::COpenFileName of(GetInstance(), *this);
+	of.WithFilter(IDS_OPEN_FILTER)
+		.WithDefaultExtension(_T("emf"))
+		.WithFlags(OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT);
 
-	memset(&of, 0, sizeof(of));
-	of.lStructSize  = sizeof(of);
-	of.hwndOwner    = GetHandle();
-	of.Flags        = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
-	of.lpstrFile    = (LPTSTR)malloc(MAX_PATH);
-	of.lpstrFile[0] = '\0';
-	of.nMaxFile     = MAX_PATH;
-	of.lpstrDefExt  = _T("emf");
-	of.lpstrFilter  = pfilter;
-
-	if (GetSaveFileName(&of))
+	if (of.GetSaveFileName())
 	{
-		renderMetafile(myTree, GetHandle(), of.lpstrFile);
+		renderMetafile(myTree, GetHandle(), of.GetFile());
 	}
-
-	free(of.lpstrFile);
-	free(pfilter);
 }
 
 void MainWindow::OnAdd()
@@ -289,13 +254,10 @@ int MainWindow::CbSetItemData(int id, int index, LPARAM data)
 void MainWindow::CbAddKeyType(int keyType)
 {
 	const int STRING_OFFSET = 100;
-	LPTSTR buffer           = GetInstance().LoadString(STRING_OFFSET + keyType);
-	LPCTSTR msg             = buffer ? buffer : _T("Failed to load string");
+	WinObj::LoadedString buffer(GetInstance(), STRING_OFFSET + keyType);
+	LPCTSTR msg =
+		buffer.GetBuffer() ? buffer.GetBuffer() : _T("Failed to load string");
 	CbSetItemData(ID_KEYTYPE, CbAddString(ID_KEYTYPE, msg), keyType);
-	if (buffer)
-	{
-		free(buffer);
-	}
 }
 
 LRESULT MainWindow::OnCommand(UINT message, WPARAM wParam, LPARAM lParam)

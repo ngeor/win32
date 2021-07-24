@@ -21,6 +21,9 @@ class CWindowClass
 	int _smallIcon;
 	int _menu;
 	LPCTSTR _className;
+	CWindowClass(const CWindowClass& other)
+	{
+	}
 
 public:
 	CWindowClass();
