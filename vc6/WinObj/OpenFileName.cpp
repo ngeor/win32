@@ -75,13 +75,13 @@ bool COpenFileName::AfterDialog(bool result)
 bool COpenFileName::GetOpenFileName()
 {
 	BeforeDialog();
-	return AfterDialog(::GetOpenFileName(&_of));
+	return AfterDialog(::GetOpenFileName(&_of) != 0);
 }
 
 bool COpenFileName::GetSaveFileName()
 {
 	BeforeDialog();
-	return AfterDialog(::GetSaveFileName(&_of));
+	return AfterDialog(::GetSaveFileName(&_of) != 0);
 }
 
 COpenFileName& COpenFileName::WithFilter(int stringResource)

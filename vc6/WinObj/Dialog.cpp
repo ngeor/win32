@@ -85,7 +85,7 @@ LRESULT CDialog::OnMessage(UINT message, WPARAM wParam, LPARAM lParam)
 
 bool CDialog::EndDialog(INT_PTR result)
 {
-	return ::EndDialog(GetHandle(), result);
+	return ::EndDialog(GetHandle(), result) != 0;
 }
 
 } // namespace WinObj
