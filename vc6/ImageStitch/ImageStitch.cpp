@@ -96,63 +96,30 @@ void MainDialog::DoAddFile(LPCTSTR szFileName, LPCTSTR szPathName)
 
 void MainDialog::OnCmdAdd()
 {
-	OPENFILENAME of;
-	TCHAR szFileName[MAX_PATH];
-	LPTSTR p;
-
-	// set filter string
-	LPTSTR pFilter = GetInstance().LoadString(IDS_OPEN_IMAGE_FILTER);
-	for (p = pFilter; *p != '\0'; p++)
-		if (*p == '|')
-			*p = '\0';
-	*(++p) = '\0';
-
-	// set file name to null
-	szFileName[0] = '\0';
-
-	// fill in OPENFILENAME structure
-	ZeroMemory(&of, sizeof(OPENFILENAME));
-	of.lStructSize  = sizeof(OPENFILENAME);
-	of.hwndOwner    = GetHandle();
-	of.hInstance    = GetInstance().GetHandle();
-	of.lpstrFilter  = pFilter;
-	of.nFilterIndex = 1;
-	of.lpstrFile    = szFileName;
-	of.nMaxFile     = MAX_PATH;
-	of.Flags        = OFN_ALLOWMULTISELECT | OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
-
-	if (GetOpenFileName(&of))
+	WinObj::COpenFileName of(GetInstance(), *this);
+	of.WithFilter(IDS_OPEN_IMAGE_FILTER)
+		.WithFilterIndex(1)
+		.WithFlags(OFN_ALLOWMULTISELECT | OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY);
+	if (of.GetOpenFileName())
 	{
-		if (of.nFileOffset > lstrlen(of.lpstrFile))
+		LPCTSTR file = of.GetFile();
+		if (of.GetFileOffset() > _tcslen(file))
 		{
-			// multiple files
-			int nCount = 0;
-			LPTSTR q;
-
-			p = szFileName;
-
-			do
+			// multiple files, separated by null, first element in path, last element terminated with double null
+			LPCTSTR nextFile = file + of.GetFileOffset();
+			while (*nextFile != '\0')
 			{
-				q = p; // save start
-				while (*p != '\0')
-					p++;
-				if (q != p)
-				{
-					nCount++;
-					if (nCount >= 2)
-						DoAddFile(q, szFileName);
-					p++;
-				}
-			} while (q != p);
+				DoAddFile(nextFile, file);
+				nextFile = nextFile + _tcslen(nextFile) + 1;
+			}
 		}
 		else
 		{
 			// single file
-			DoAddFile(szFileName);
+			DoAddFile(file);
 		}
 		InvalidateRect();
 	}
-	free(pFilter);
 }
 
 void MainDialog::OnCmdRemove()
@@ -227,40 +194,15 @@ void MainDialog::DoOpenFile(LPCTSTR szFileName)
 
 void MainDialog::OnCmdOpenFile()
 {
-	OPENFILENAME of;
-	TCHAR szFileName[MAX_PATH];
-	LPTSTR p;
-
-	// set filter string
-	LPTSTR pFilter = GetInstance().LoadString(IDS_OPEN_FILTER);
-	for (p = pFilter; *p != '\0'; p++)
-		if (*p == '|')
-			*p = '\0';
-
-	// set file name to null
-	szFileName[0] = '\0';
-
-	// load default extention
-	LPTSTR pDefExt = GetInstance().LoadString(IDS_DEF_EXT);
-
-	// fill in OPENFILENAME structure
-	ZeroMemory(&of, sizeof(OPENFILENAME));
-	of.lStructSize  = sizeof(OPENFILENAME);
-	of.hwndOwner    = GetHandle();
-	of.hInstance    = GetInstance().GetHandle();
-	of.lpstrFilter  = pFilter;
-	of.nFilterIndex = 1;
-	of.lpstrFile    = szFileName;
-	of.nMaxFile     = MAX_PATH;
-	of.lpstrDefExt  = pDefExt;
-	of.Flags        = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
-
-	if (GetOpenFileName(&of))
+	WinObj::COpenFileName of(GetInstance(), *this);
+	of.WithFilter(IDS_OPEN_FILTER)
+		.WithDefaultExtension(_T("isf"))
+		.WithFilterIndex(1)
+		.WithFlags(OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY);
+	if (of.GetOpenFileName())
 	{
-		DoOpenFile(szFileName);
+		DoOpenFile(of.GetFile());
 	}
-	free(pDefExt);
-	free(pFilter);
 }
 
 void MainDialog::DoSaveFile(LPCTSTR szFileName)
@@ -286,41 +228,15 @@ void MainDialog::DoSaveFile(LPCTSTR szFileName)
 
 void MainDialog::OnCmdSaveFile()
 {
-	OPENFILENAME of;
-	TCHAR szFileName[MAX_PATH];
-	LPTSTR p;
-
-	// set filter string
-	LPTSTR pFilter = GetInstance().LoadString(IDS_OPEN_FILTER);
-	for (p = pFilter; *p != '\0'; p++)
-		if (*p == '|')
-			*p = '\0';
-	*(++p) = '\0';
-
-	// set file name to null
-	szFileName[0] = '\0';
-
-	// load default extention
-	LPTSTR pDefExt = GetInstance().LoadString(IDS_DEF_EXT);
-
-	// fill in OPENFILENAME structure
-	ZeroMemory(&of, sizeof(OPENFILENAME));
-	of.lStructSize  = sizeof(OPENFILENAME);
-	of.hwndOwner    = GetHandle();
-	of.hInstance    = GetInstance().GetHandle();
-	of.lpstrFilter  = pFilter;
-	of.nFilterIndex = 1;
-	of.lpstrFile    = szFileName;
-	of.nMaxFile     = MAX_PATH;
-	of.lpstrDefExt  = pDefExt;
-	of.Flags        = OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY;
-
-	if (GetSaveFileName(&of))
+	WinObj::COpenFileName of(GetInstance(), *this);
+	of.WithFilter(IDS_OPEN_FILTER)
+		.WithDefaultExtension(_T("isf"))
+		.WithFilterIndex(1)
+		.WithFlags(OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY);
+	if (of.GetSaveFileName())
 	{
-		DoSaveFile(szFileName);
+		DoSaveFile(of.GetFile());
 	}
-	free(pDefExt);
-	free(pFilter);
 }
 
 void MainDialog::OnCommand(WPARAM wParam, LPARAM lParam)

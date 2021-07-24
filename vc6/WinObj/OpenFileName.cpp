@@ -89,6 +89,12 @@ COpenFileName& COpenFileName::WithFilter(int stringResource)
 	return *this;
 }
 
+COpenFileName& COpenFileName::WithFilterIndex(int filterIndex)
+{
+	_of.nFilterIndex = filterIndex;
+	return *this;
+}
+
 COpenFileName& COpenFileName::WithFlags(DWORD flags)
 {
 	_of.Flags = flags;
@@ -104,6 +110,11 @@ COpenFileName& COpenFileName::WithDefaultExtension(LPCTSTR defaultExtension)
 LPCTSTR COpenFileName::GetFile()
 {
 	return _of.lpstrFile;
+}
+
+int COpenFileName::GetFileOffset()
+{
+	return _of.nFileOffset;
 }
 
 } // namespace WinObj
