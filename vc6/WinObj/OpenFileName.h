@@ -18,7 +18,7 @@ class COpenFileName
 {
 	const CInstance& _app;
 	OPENFILENAME _of;
-	LoadedString _filter;
+	str _filter;
 	void BeforeDialog();
 	bool AfterDialog(bool result);
 	COpenFileName(const COpenFileName& other);

@@ -16,6 +16,7 @@
 #include <assert.h>
 #include <commdlg.h>
 #include <malloc.h>
+#include <string>
 #include <tchar.h>
 
 // TODO: reference additional headers your program requires here

@@ -254,9 +254,9 @@ int MainWindow::CbSetItemData(int id, int index, LPARAM data)
 void MainWindow::CbAddKeyType(int keyType)
 {
 	const int STRING_OFFSET = 100;
-	WinObj::LoadedString buffer(GetInstance(), STRING_OFFSET + keyType);
+	str buffer              = GetInstance().LoadString(STRING_OFFSET + keyType);
 	LPCTSTR msg =
-		buffer.GetBuffer() ? buffer.GetBuffer() : _T("Failed to load string");
+		buffer.length() > 0 ? buffer.c_str() : _T("Failed to load string");
 	CbSetItemData(ID_KEYTYPE, CbAddString(ID_KEYTYPE, msg), keyType);
 }
 

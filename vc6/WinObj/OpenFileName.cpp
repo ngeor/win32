@@ -12,7 +12,7 @@ namespace WinObj
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-COpenFileName::COpenFileName(const CInstance& app, const CWnd& owner) : _app(app), _filter(NULL, 0)
+COpenFileName::COpenFileName(const CInstance& app, const CWnd& owner) : _app(app), _filter()
 {
 	memset(&_of, 0, sizeof(OPENFILENAME));
 	_of.lStructSize = sizeof(OPENFILENAME);
@@ -32,13 +32,14 @@ COpenFileName::~COpenFileName()
 }
 
 // filter needs to be terminated with double null
-LPTSTR ReplaceFilter(LPTSTR filter, int len)
+LPTSTR ReplaceFilter(const str& filter)
 {
+	int len          = filter.length();
 	LPTSTR newBuffer = (LPTSTR)calloc(len + 2, sizeof(TCHAR));
 #if _MSC_VER > 1200
-	_tcsncpy_s(newBuffer, len + 1, filter, len);
+	_tcsncpy_s(newBuffer, len + 1, filter.c_str(), len);
 #else
-	_tcsncpy(newBuffer, filter, len);
+	_tcsncpy(newBuffer, filter.c_str(), len);
 #endif
 
 	LPTSTR p = newBuffer;
@@ -55,15 +56,15 @@ LPTSTR ReplaceFilter(LPTSTR filter, int len)
 
 void COpenFileName::BeforeDialog()
 {
-	if (_filter.GetLen() > 0)
+	if (_filter.length() > 0)
 	{
-		_of.lpstrFilter = ReplaceFilter(_filter.GetBuffer(), _filter.GetLen());
+		_of.lpstrFilter = ReplaceFilter(_filter);
 	}
 }
 
 bool COpenFileName::AfterDialog(bool result)
 {
-	if (_filter.GetLen() > 0)
+	if (_filter.length() > 0)
 	{
 		free((void*)_of.lpstrFilter);
 		_of.lpstrFilter = NULL;
@@ -85,7 +86,7 @@ bool COpenFileName::GetSaveFileName()
 
 COpenFileName& COpenFileName::WithFilter(int stringResource)
 {
-	_app.LoadString(stringResource, _filter);
+	_filter = _app.LoadString(stringResource);
 	return *this;
 }
 
