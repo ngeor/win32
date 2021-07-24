@@ -28,9 +28,12 @@ public:
 
 	/// Gets the application instance.
 	const CInstance& GetInstance() const;
+
+	bool EndDialog(INT_PTR result = 0);
 };
 
 LRESULT CALLBACK __InternalDialogBootstrapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK __InternalModalDialogBootstrapProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 /// Creates a new dialog. The typename T must derive from CDialog and have a constructor
 /// accepting one CInstance and a HWND handle (just like the constructor of CDialog).
@@ -51,6 +54,16 @@ template <typename T> T* BuildDialog(const CInstance& instance, int dialog)
 	// need to call this because WM_INITDIALOG was already called by Windows and the CDialog missed it
 	wnd->OnMessage(WM_INITDIALOG, 0, 0);
 	return wnd;
+}
+
+template <typename T> INT_PTR ModalDialogBox(const CInstance& instance, int dialog)
+{
+	// TODO try without `new`
+	T* wnd         = new T(instance, NULL);
+	INT_PTR result = DialogBoxParam(instance.GetHandle(), MAKEINTRESOURCE(dialog), 0,
+	                                (DLGPROC)__InternalModalDialogBootstrapProc, (LPARAM)wnd);
+	delete wnd;
+	return result;
 }
 
 } // namespace WinObj

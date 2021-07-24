@@ -80,6 +80,11 @@ UINT CWnd::GetDlgItemInt(int id, bool* translated, bool bSigned)
 	return result;
 }
 
+bool CWnd::SetDlgItemInt(int id, int value, bool bSigned)
+{
+	return ::SetDlgItemInt(GetHandle(), id, value, bSigned);
+}
+
 int CWnd::GetDlgItemTextLength(int id)
 {
 	HWND hChild = ::GetDlgItem(GetHandle(), id);
@@ -96,6 +101,19 @@ int CWnd::GetDlgItemTextLength(int id)
 LRESULT CWnd::SendDlgItemMessage(int id, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return ::SendDlgItemMessage(GetHandle(), id, msg, wParam, lParam);
+}
+
+bool CWnd::GetDlgItemClientRect(int id, LPRECT rect)
+{
+	HWND hChild = ::GetDlgItem(GetHandle(), id);
+	if (hChild != NULL)
+	{
+		return ::GetClientRect(hChild, rect);
+	}
+	else
+	{
+		return false;
+	}
 }
 
 } // namespace WinObj
