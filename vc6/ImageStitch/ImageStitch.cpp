@@ -236,7 +236,6 @@ void MainDialog::OnCmdOpenFile()
 	for (p = pFilter; *p != '\0'; p++)
 		if (*p == '|')
 			*p = '\0';
-	*(++p) = '\0';
 
 	// set file name to null
 	szFileName[0] = '\0';

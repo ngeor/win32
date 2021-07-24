@@ -97,8 +97,7 @@ void MainWindow::OnOpenTreeFile()
 	of.lStructSize  = sizeof(of);
 	of.hwndOwner    = GetHandle();
 	of.Flags        = OFN_HIDEREADONLY | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
-	of.lpstrFile    = (LPTSTR)malloc(MAX_PATH);
-	of.lpstrFile[0] = '\0';
+	of.lpstrFile    = (LPTSTR)calloc(MAX_PATH, sizeof(TCHAR));
 	of.nMaxFile     = MAX_PATH;
 	of.lpstrDefExt  = _T("emf");
 	of.lpstrFilter  = pfilter;
