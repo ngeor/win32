@@ -4,6 +4,8 @@
 #include "Render.h"
 #include "resource.h"
 
+#define DEFAULT_EXTENSION _T("emf")
+
 MainWindow::MainWindow(const WinObj::CInstance &instance, HWND hWnd)
 	: WinObj::CDialog(instance, hWnd)
 {
@@ -81,7 +83,7 @@ void MainWindow::OnOpenTreeFile()
 {
 	WinObj::COpenFileName of(GetInstance(), *this);
 	of.WithFilter(IDS_OPEN_FILTER)
-		.WithDefaultExtension(_T("emf"))
+		.WithDefaultExtension(DEFAULT_EXTENSION)
 		.WithFlags(OFN_HIDEREADONLY | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST);
 	if (of.GetOpenFileName())
 	{
@@ -98,7 +100,7 @@ void MainWindow::OnSaveMetafile()
 
 	WinObj::COpenFileName of(GetInstance(), *this);
 	of.WithFilter(IDS_OPEN_FILTER)
-		.WithDefaultExtension(_T("emf"))
+		.WithDefaultExtension(DEFAULT_EXTENSION)
 		.WithFlags(OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT);
 
 	if (of.GetSaveFileName())
