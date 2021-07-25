@@ -10,12 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include "Handle.h"
-
-#if UNICODE
-typedef std::wstring str;
-#else
-typedef std::string str;
-#endif
+#include "str.h"
 
 namespace WinObj
 {

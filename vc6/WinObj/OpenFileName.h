@@ -11,6 +11,7 @@
 
 #include "Instance.h"
 #include "Wnd.h"
+#include "str.h"
 
 namespace WinObj
 {

@@ -273,7 +273,6 @@ void MainDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 
 void MainDialog::OnDeleteItem(WPARAM wParam, LPARAM lParam)
 {
-	int idCtl                = wParam;                     // control identifier
 	LPDELETEITEMSTRUCT lpdis = (LPDELETEITEMSTRUCT)lParam; // structure with item information
 	if (lpdis->CtlID == ID_LST_ICONS)
 	{

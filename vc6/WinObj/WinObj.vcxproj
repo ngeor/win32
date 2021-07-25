@@ -159,6 +159,7 @@
     <ClInclude Include="MessageLoop.h" />
     <ClInclude Include="OpenFileName.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="str.h" />
     <ClInclude Include="WindowClass.h" />
     <ClInclude Include="WinObj.h" />
     <ClInclude Include="Wnd.h" />

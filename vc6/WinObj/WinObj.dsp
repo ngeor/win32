@@ -150,6 +150,10 @@ SOURCE=.\StdAfx.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\str.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\WindowClass.h
 # End Source File
 # Begin Source File
