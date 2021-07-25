@@ -86,7 +86,7 @@ bool COpenFileName::GetSaveFileName()
 
 COpenFileName& COpenFileName::WithFilter(int stringResource)
 {
-	_filter = _app.LoadString(stringResource);
+	_filter = _app.LoadStr(stringResource);
 	return *this;
 }
 

@@ -38,7 +38,7 @@ class MainDialog : public WinObj::CDialog
 	void OnCmdSaveFile();
 
 public:
-	MainDialog(const WinObj::CInstance& instance, HWND hWnd);
+	MainDialog(const WinObj::CInstance& instance);
 	virtual ~MainDialog();
 	virtual LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
 };
@@ -427,7 +427,7 @@ void MainDialog::OnPaint()
 	EndPaint(&ps);
 }
 
-MainDialog::MainDialog(const WinObj::CInstance& instance, HWND hWnd) : WinObj::CDialog(instance, hWnd)
+MainDialog::MainDialog(const WinObj::CInstance& instance) : WinObj::CDialog(instance)
 {
 }
 
@@ -471,6 +471,7 @@ LRESULT MainDialog::OnMessage(UINT message, WPARAM wParam, LPARAM lParam)
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	WinObj::CInstance app(hInstance);
-	WinObj::ModalDialogBox<MainDialog>(app, IDD_MAIN);
+	MainDialog dialog(app);
+	dialog.Modal(IDD_MAIN);
 	return 0;
 }

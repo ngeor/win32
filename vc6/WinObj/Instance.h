@@ -28,7 +28,7 @@ public:
 	virtual ~CInstance();
 
 	/// Loads the specified string from resources.
-	str LoadString(int id) const;
+	str LoadStr(int id) const;
 };
 } // namespace WinObj
 

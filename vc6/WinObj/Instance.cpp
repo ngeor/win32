@@ -20,7 +20,7 @@ CInstance::~CInstance()
 {
 }
 
-str CInstance::LoadString(int id) const
+str CInstance::LoadStr(int id) const
 {
 	HINSTANCE hInstance = GetHandle();
 #if _MSC_VER > 1200

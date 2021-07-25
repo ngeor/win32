@@ -6,8 +6,8 @@
 
 #define DEFAULT_EXTENSION _T("emf")
 
-MainWindow::MainWindow(const WinObj::CInstance &instance, HWND hWnd)
-	: WinObj::CDialog(instance, hWnd)
+MainWindow::MainWindow(const WinObj::CInstance &instance)
+	: WinObj::CDialog(instance)
 {
 	myTree = treeFactory.Create(TreeTypeSearch, KeyTypeInteger);
 }
@@ -256,7 +256,7 @@ int MainWindow::CbSetItemData(int id, int index, LPARAM data)
 void MainWindow::CbAddKeyType(int keyType)
 {
 	const int STRING_OFFSET = 100;
-	str buffer              = GetInstance().LoadString(STRING_OFFSET + keyType);
+	str buffer              = GetInstance().LoadStr(STRING_OFFSET + keyType);
 	LPCTSTR msg =
 		buffer.length() > 0 ? buffer.c_str() : _T("Failed to load string");
 	CbSetItemData(ID_KEYTYPE, CbAddString(ID_KEYTYPE, msg), keyType);
