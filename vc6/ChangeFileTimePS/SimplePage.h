@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "..\WinObj\str.h"
 #include "PropertyPageDialog.h"
 #include "resource.h"
 
@@ -39,10 +40,10 @@
 class CSimplePage : public CPropertyPageDialog
 {
 private:
-	void recurseThat(LPCTSTR szDir);
+	void recurseThat(const str& szDir);
 	int RecurseMode();
 	string_list mylist;
-	string_list* templist;
+	string_list templist;
 	bool hasfolders;
 	int recurseMode;
 	TCHAR recurseFilter[MAX_PATH];
@@ -53,13 +54,11 @@ public:
 	{
 		int it;
 
-		templist = NULL;
-
-		for (it = 0; it < otherList.getSize(); it++)
+		for (it = 0; it < otherList.size(); it++)
 		{
 			// 'it' points at the next filename.  Allocate a new copy of the string
 			// that the page will own.
-			mylist.push_back(otherList.getAt(it));
+			mylist.push_back(otherList[it]);
 		}
 
 		this->hasfolders = hasfolders;
@@ -68,22 +67,15 @@ public:
 
 	void initTempList()
 	{
-		if (templist != NULL)
-			delete templist;
-		int it;
-
-		templist = new string_list();
-
-		for (it = 0; it < mylist.getSize(); it++)
+		templist.clear();
+		for (int it = 0; it < mylist.size(); it++)
 		{
-			templist->push_back(mylist.getAt(it));
+			templist.push_back(mylist[it]);
 		}
 	}
 
 	virtual ~CSimplePage()
 	{
-		if (templist != NULL)
-			delete templist;
 	}
 
 	void OnAttributesClick()
@@ -154,9 +146,9 @@ public:
 		prepareAttribute(orMask, andMask, bSystem, bInitSystem, FILE_ATTRIBUTE_SYSTEM);
 	}
 
-	void MySetFileAttrs(LPCTSTR lpFileName, DWORD orMask, DWORD andMask)
+	void MySetFileAttrs(const str& lpFileName, DWORD orMask, DWORD andMask)
 	{
-		DWORD attrs = GetFileAttributes(lpFileName);
+		DWORD attrs = GetFileAttributes(lpFileName.c_str());
 		if (attrs == 0xFFFFFFFF)
 		{
 			// add a failure message to the log
@@ -166,7 +158,7 @@ public:
 			attrs |= orMask;
 			attrs &= andMask;
 
-			if (!SetFileAttributes(lpFileName, attrs))
+			if (!SetFileAttributes(lpFileName.c_str(), attrs))
 			{
 				// add a failure message to the log
 			}
@@ -195,9 +187,9 @@ public:
 		}
 	}
 
-	void MySetFileTime(LPCTSTR lpFileName, LPFILETIME f1, LPFILETIME f2, LPFILETIME f3)
+	void MySetFileTime(const str& lpFileName, LPFILETIME f1, LPFILETIME f2, LPFILETIME f3)
 	{
-		HANDLE hFile = CreateFile(lpFileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+		HANDLE hFile = CreateFile(lpFileName.c_str(), GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		                          FILE_FLAG_BACKUP_SEMANTICS, NULL);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
@@ -213,9 +205,9 @@ public:
 		}
 	}
 
-	void MyGetFileTime(LPCTSTR lpFileName, SYSTEMTIME(s)[3])
+	void MyGetFileTime(const str& lpFileName, SYSTEMTIME(s)[3])
 	{
-		HANDLE hFile = CreateFile(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+		HANDLE hFile = CreateFile(lpFileName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		                          FILE_FLAG_BACKUP_SEMANTICS, NULL);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
@@ -237,7 +229,7 @@ public:
 		}
 	}
 
-	void InitDateTimeCtls(LPCTSTR lpFileName)
+	void InitDateTimeCtls(const str& lpFileName)
 	{
 		SYSTEMTIME s[3];
 		MyGetFileTime(lpFileName, s);
@@ -278,11 +270,11 @@ public:
 
 		if (recurseMode & RECURSE_SKIP_ROOT)
 		{
-			templist = new string_list();
-			for (it = 0; it < mylist.getSize(); it++)
+			templist.clear();
+			for (it = 0; it < mylist.size(); it++)
 			{
-				if (!(GetFileAttributes(mylist[it]) & FILE_ATTRIBUTE_DIRECTORY))
-					templist->push_back(mylist[it]);
+				if (!(GetFileAttributes(mylist[it].c_str()) & FILE_ATTRIBUTE_DIRECTORY))
+					templist.push_back(mylist[it]);
 			}
 		}
 		else
@@ -290,9 +282,9 @@ public:
 
 		if (recurseMode != RECURSE_SIMPLE)
 		{
-			for (it = 0; it < mylist.getSize(); it++)
+			for (it = 0; it < mylist.size(); it++)
 			{
-				if (GetFileAttributes(mylist[it]) & FILE_ATTRIBUTE_DIRECTORY)
+				if (GetFileAttributes(mylist[it].c_str()) & FILE_ATTRIBUTE_DIRECTORY)
 					recurseThat(mylist[it]);
 			}
 		}
@@ -310,11 +302,11 @@ public:
 			prepareMasks(&orMask, &andMask, bArchive, bReadOnly, bHidden, bSystem);
 
 			// for each file:
-			for (it = 0; it < templist->getSize(); it++)
+			for (it = 0; it < templist.size(); it++)
 			{
 				// MessageBox(0, it->c_str(), "", 0);
 
-				MySetFileAttrs(templist->getAt(it), orMask, andMask);
+				MySetFileAttrs(templist[it], orMask, andMask);
 			}
 
 			bInitArchive  = IsDlgButtonChecked(hWnd, IDC_ARCHIVE);
@@ -383,31 +375,30 @@ public:
 			if (!failure)
 			{
 				bool includeReadOnly = IsDlgButtonChecked(hWnd, IDC_READONLY_TOO) == BST_CHECKED;
-				for (it = 0; it < templist->getSize(); it++)
+				for (it = 0; it < templist.size(); it++)
 				{
 					bool restoreReadOnly = false;
 					DWORD attrs;
 
 					if (includeReadOnly)
 					{
-						attrs = GetFileAttributes(templist->getAt(it));
+						attrs = GetFileAttributes(templist[it].c_str());
 						if (restoreReadOnly = (attrs & FILE_ATTRIBUTE_READONLY))
 						{
-							SetFileAttributes(templist->getAt(it), attrs & ~FILE_ATTRIBUTE_READONLY);
+							SetFileAttributes(templist[it].c_str(), attrs & ~FILE_ATTRIBUTE_READONLY);
 							// MessageBox(0, it->c_str(), "", 0);
 						}
 					}
 
-					MySetFileTime(templist->getAt(it), lpftCreate, lpftLastAccess, lpftLastWrite);
+					MySetFileTime(templist[it], lpftCreate, lpftLastAccess, lpftLastWrite);
 
 					if (restoreReadOnly)
-						SetFileAttributes(templist->getAt(it), attrs);
+						SetFileAttributes(templist[it].c_str(), attrs);
 				}
 			}
 		}
 
-		delete templist;
-		templist = NULL;
+		templist.clear();
 		SetCursor(LoadCursor(0, IDC_ARROW));
 
 		return true;
@@ -459,11 +450,11 @@ public:
 		case WM_INITDIALOG:
 			UINT bArchive, bReadOnly, bHidden, bSystem;
 
-			for (it = 0; it < mylist.getSize(); it++)
+			for (it = 0; it < mylist.size(); it++)
 			{
 
-				SendDlgItemMessage(hWnd, IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)mylist[it]);
-				DWORD attrs = GetFileAttributes(mylist[it]);
+				SendDlgItemMessage(hWnd, IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)mylist[it].c_str());
+				DWORD attrs = GetFileAttributes(mylist[it].c_str());
 
 				checkFileAttribute(attrs, FILE_ATTRIBUTE_ARCHIVE, &bArchive, it == 0);
 				checkFileAttribute(attrs, FILE_ATTRIBUTE_READONLY, &bReadOnly, it == 0);

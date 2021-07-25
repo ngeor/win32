@@ -5,13 +5,12 @@
 #include "stdafx.h"
 #include "SimplePage.h"
 
-LPTSTR IncludeTrailingBackSlash(LPTSTR buf)
+str IncludeTrailingBackSlash(const str& buf)
 {
-	int len = lstrlen(buf);
+	int len = buf.size();
 	if (len > 0 && buf[len - 1] != '\\')
 	{
-		buf[len]     = '\\';
-		buf[len + 1] = '\0';
+		return buf + _T("\\");
 	}
 	return buf;
 }
@@ -74,22 +73,20 @@ int CSimplePage::RecurseMode()
 	return ret;
 }
 
-void CSimplePage::recurseThat(LPCTSTR szDir)
+void CSimplePage::recurseThat(const str& szDir)
 {
 	HANDLE fh;
 	WIN32_FIND_DATA fd;
-	TCHAR buf[MAX_PATH];
+	str buf = IncludeTrailingBackSlash(szDir) + _T("*.*");
 
-	lstrcat(IncludeTrailingBackSlash(lstrcpy(buf, szDir)), _T("*.*"));
 	// MessageBox(0, buf, "", 0);
-	if ((fh = FindFirstFile(buf, &fd)) != INVALID_HANDLE_VALUE)
+	if ((fh = FindFirstFile(buf.c_str(), &fd)) != INVALID_HANDLE_VALUE)
 	{
 		do
 		{
 			if (lstrcmp(fd.cFileName, _T(".")) && lstrcmp(fd.cFileName, _T("..")))
 			{
-				lstrcat(IncludeTrailingBackSlash(lstrcpy(buf, szDir)), fd.cFileName);
-
+				buf = IncludeTrailingBackSlash(szDir) + fd.cFileName;
 				if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
 					recurseThat(buf);
@@ -99,25 +96,24 @@ void CSimplePage::recurseThat(LPCTSTR szDir)
 		FindClose(fh);
 	}
 
-	lstrcat(IncludeTrailingBackSlash(lstrcpy(buf, szDir)), recurseFilter);
+	buf = IncludeTrailingBackSlash(szDir) + recurseFilter;
 
-	if ((fh = FindFirstFile(buf, &fd)) != INVALID_HANDLE_VALUE)
+	if ((fh = FindFirstFile(buf.c_str(), &fd)) != INVALID_HANDLE_VALUE)
 	{
 		do
 		{
 			if (lstrcmp(fd.cFileName, _T(".")) && lstrcmp(fd.cFileName, _T("..")))
 			{
-				lstrcat(IncludeTrailingBackSlash(lstrcpy(buf, szDir)), fd.cFileName);
-
+				buf = IncludeTrailingBackSlash(szDir) + fd.cFileName;
 				if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
 					if (recurseMode & RECURSE_FOLDERS)
-						templist->push_back(buf);
+						templist.push_back(buf);
 				}
 				else
 				{
 					if (recurseMode & RECURSE_FILES)
-						templist->push_back(buf);
+						templist.push_back(buf);
 				}
 			}
 		} while (FindNextFile(fh, &fd));

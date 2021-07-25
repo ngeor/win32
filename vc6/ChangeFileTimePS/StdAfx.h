@@ -26,69 +26,14 @@ extern CComModule _Module;
 #include <comdef.h>
 #include <shellapi.h>
 #include <shlobj.h>
+#include <string>
+#include <vector>
 
-class string_list
-{
-private:
-	LPTSTR* data;
-	int size;
-	int capacity;
-
-	void ensureSize(int reqsize)
-	{
-		if (reqsize > capacity)
-		{
-			LPTSTR* temp = new LPTSTR[capacity = reqsize * 2];
-			for (int i = 0; i < size; i++)
-				temp[i] = data[i];
-			for (int j = size; j < capacity; j++)
-				temp[j] = new TCHAR[MAX_PATH];
-
-			delete[] data;
-			data = temp;
-		}
-
-		size = reqsize;
-	}
-
-public:
-	string_list()
-	{
-		size     = 0;
-		capacity = 1;
-		data     = new LPTSTR[1];
-		data[0]  = new TCHAR[MAX_PATH];
-	}
-
-	virtual ~string_list()
-	{
-		for (int i = 0; i < capacity; i++)
-			delete data[i];
-		delete[] data;
-	}
-
-	int getSize()
-	{
-		return size;
-	}
-
-	LPTSTR getAt(int i)
-	{
-		return data[i];
-	}
-
-	LPTSTR operator[](int i)
-	{
-		return data[i];
-	}
-
-	LPTSTR push_back(LPCTSTR sz)
-	{
-		ensureSize(size + 1);
-		lstrcpy(data[size - 1], sz);
-		return data[size - 1];
-	}
-};
+#ifdef UNICODE
+typedef std::vector<std::wstring> string_list;
+#else
+typedef std::vector<std::string> string_list;
+#endif
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
