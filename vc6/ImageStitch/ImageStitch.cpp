@@ -10,13 +10,13 @@
 #define ID_CMD_OPEN_FILE 502
 #define ID_CMD_SAVE_FILE 503
 
+#define DEFAULT_EXTENSION _T("isf")
+
 typedef struct ListEntry
 {
 	TCHAR szPath[MAX_PATH];
 	HBITMAP hBitmap;
 } ListEntry;
-
-void DoOpenFile(HWND hWnd, LPCTSTR szFileName);
 
 class MainDialog : public WinObj::CDialog
 {
@@ -196,7 +196,7 @@ void MainDialog::OnCmdOpenFile()
 {
 	WinObj::COpenFileName of(GetInstance(), *this);
 	of.WithFilter(IDS_OPEN_FILTER)
-		.WithDefaultExtension(_T("isf"))
+		.WithDefaultExtension(DEFAULT_EXTENSION)
 		.WithFilterIndex(1)
 		.WithFlags(OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY);
 	if (of.GetOpenFileName())
@@ -230,7 +230,7 @@ void MainDialog::OnCmdSaveFile()
 {
 	WinObj::COpenFileName of(GetInstance(), *this);
 	of.WithFilter(IDS_OPEN_FILTER)
-		.WithDefaultExtension(_T("isf"))
+		.WithDefaultExtension(DEFAULT_EXTENSION)
 		.WithFilterIndex(1)
 		.WithFlags(OFN_EXPLORER | OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY);
 	if (of.GetSaveFileName())
