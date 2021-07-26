@@ -14,6 +14,7 @@
 
 #include <windows.h>
 #include <assert.h>
+#include <commctrl.h>
 #include <commdlg.h>
 #include <malloc.h>
 #include <string>

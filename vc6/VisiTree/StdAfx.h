@@ -14,6 +14,7 @@
 
 // Windows Header Files:
 #include <windows.h>
+#include <commctrl.h>
 #include <commdlg.h>
 
 // C RunTime Header Files

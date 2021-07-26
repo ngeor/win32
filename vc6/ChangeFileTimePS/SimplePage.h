@@ -9,8 +9,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "..\WinObj\Dialog.h"
+#include "..\WinObj\Instance.h"
 #include "..\WinObj\str.h"
-#include "PropertyPageDialog.h"
 #include "resource.h"
 
 #define RECURSE_SIMPLE    1
@@ -19,10 +20,6 @@
 #define RECURSE_SKIP_ROOT 8
 
 //#define MULTIPLE_FILES list.getFileCount() > 1
-
-#define GETDATEPICKER(n)         GetDlgItem(hWnd, IDC_DATEPICKER1 + n)
-#define GETTIMEPICKER(n)         GetDlgItem(hWnd, IDC_TIMEPICKER1 + n)
-#define GET_SOME_FILETIME(n, ft) GetSomeFileTime(GETDATEPICKER(n), GETTIMEPICKER(n), ft)
 
 #define BUTTON_HANDLER(id, proc)                                                                                       \
 	if (LOWORD(wParam) == id && HIWORD(wParam) == BN_CLICKED)                                                          \
@@ -37,7 +34,7 @@
 		return 0;                                                                                                      \
 	}
 
-class CSimplePage : public CPropertyPageDialog
+class CSimplePage : public WinObj::CDialog
 {
 private:
 	void recurseThat(const str& szDir);
@@ -50,7 +47,7 @@ private:
 	UINT bInitArchive, bInitReadOnly, bInitHidden, bInitSystem;
 
 public:
-	CSimplePage(string_list& otherList, bool hasfolders) : CPropertyPageDialog()
+	CSimplePage(const WinObj::CInstance& app, string_list& otherList, bool hasfolders) : WinObj::CDialog(app)
 	{
 		int it;
 
@@ -80,41 +77,41 @@ public:
 
 	void OnAttributesClick()
 	{
-		bool f = IsDlgButtonChecked(hWnd, IDC_ATTRIBUTES) == BST_CHECKED;
-		EnableWindow(GetDlgItem(hWnd, IDC_ARCHIVE), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_READONLY), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_HIDDEN), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_SYSTEM), f);
+		bool f = IsDlgButtonChecked(IDC_ATTRIBUTES) == BST_CHECKED;
+		EnableDlgItem(IDC_ARCHIVE, f);
+		EnableDlgItem(IDC_READONLY, f);
+		EnableDlgItem(IDC_HIDDEN, f);
+		EnableDlgItem(IDC_SYSTEM, f);
 	}
 
 	void OnTimesClick()
 	{
-		bool f = IsDlgButtonChecked(hWnd, IDC_TIMES) == BST_CHECKED;
-		EnableWindow(GetDlgItem(hWnd, IDC_ONE_TIME), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_CREATE), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_LAST_ACCESS), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_LAST_WRITE), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_DATEPICKER1), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_DATEPICKER2), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_DATEPICKER3), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_TIMEPICKER1), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_TIMEPICKER2), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_TIMEPICKER3), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_NOW1), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_NOW2), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_NOW3), f);
-		EnableWindow(GetDlgItem(hWnd, IDC_READONLY_TOO), f);
+		bool f = IsDlgButtonChecked(IDC_TIMES) == BST_CHECKED;
+		EnableDlgItem(IDC_ONE_TIME, f);
+		EnableDlgItem(IDC_CREATE, f);
+		EnableDlgItem(IDC_LAST_ACCESS, f);
+		EnableDlgItem(IDC_LAST_WRITE, f);
+		EnableDlgItem(IDC_DATEPICKER1, f);
+		EnableDlgItem(IDC_DATEPICKER2, f);
+		EnableDlgItem(IDC_DATEPICKER3, f);
+		EnableDlgItem(IDC_TIMEPICKER1, f);
+		EnableDlgItem(IDC_TIMEPICKER2, f);
+		EnableDlgItem(IDC_TIMEPICKER3, f);
+		EnableDlgItem(IDC_NOW1, f);
+		EnableDlgItem(IDC_NOW2, f);
+		EnableDlgItem(IDC_NOW3, f);
+		EnableDlgItem(IDC_READONLY_TOO, f);
 	}
 
 	void OnOneTimeClick()
 	{
-		int flag = (IsDlgButtonChecked(hWnd, IDC_ONE_TIME) == BST_CHECKED) ? SW_HIDE : SW_SHOW;
-		ShowWindow(GetDlgItem(hWnd, IDC_DATEPICKER2), flag);
-		ShowWindow(GetDlgItem(hWnd, IDC_DATEPICKER3), flag);
-		ShowWindow(GetDlgItem(hWnd, IDC_TIMEPICKER2), flag);
-		ShowWindow(GetDlgItem(hWnd, IDC_TIMEPICKER3), flag);
-		ShowWindow(GetDlgItem(hWnd, IDC_NOW2), flag);
-		ShowWindow(GetDlgItem(hWnd, IDC_NOW3), flag);
+		int flag = (IsDlgButtonChecked(IDC_ONE_TIME) == BST_CHECKED) ? SW_HIDE : SW_SHOW;
+		ShowDlgItem(IDC_DATEPICKER2, flag);
+		ShowDlgItem(IDC_DATEPICKER3, flag);
+		ShowDlgItem(IDC_TIMEPICKER2, flag);
+		ShowDlgItem(IDC_TIMEPICKER3, flag);
+		ShowDlgItem(IDC_NOW2, flag);
+		ShowDlgItem(IDC_NOW3, flag);
 	}
 
 	void applyAttribute(LPDWORD attrs, UINT checkboxState, DWORD fileAttribute)
@@ -165,13 +162,18 @@ public:
 		}
 	}
 
-	BOOL GetSomeFileTime(HWND hWndDateCtl, HWND hWndTimeCtl, LPFILETIME ft)
+	BOOL GetSomeFileTime(int ctlIndex, LPFILETIME ft)
 	{
+		WinObj::CDatePicker* dateCtl = GetChild<WinObj::CDatePicker>(IDC_DATEPICKER1 + ctlIndex);
+		WinObj::CDatePicker* timeCtl = GetChild<WinObj::CDatePicker>(IDC_TIMEPICKER1 + ctlIndex);
 		SYSTEMTIME p1;
 		SYSTEMTIME p2;
+		bool validDate = dateCtl->GetSystemTime(&p1) == GDT_VALID;
+		bool validTime = timeCtl->GetSystemTime(&p2) == GDT_VALID;
 		FILETIME f1;
-		if (DateTime_GetSystemtime(hWndDateCtl, &p1) == GDT_VALID &&
-		    DateTime_GetSystemtime(hWndTimeCtl, &p2) == GDT_VALID)
+		delete timeCtl;
+		delete dateCtl;
+		if (validDate && validTime)
 		{
 			p1.wHour         = p2.wHour;
 			p1.wMilliseconds = p2.wMilliseconds;
@@ -229,14 +231,23 @@ public:
 		}
 	}
 
+	void SetSystemTime(int index, LPSYSTEMTIME systemTime)
+	{
+		WinObj::CDatePicker* dateCtl = GetChild<WinObj::CDatePicker>(IDC_DATEPICKER1 + index);
+		dateCtl->SetSystemTime(GDT_VALID, systemTime);
+		delete dateCtl;
+		WinObj::CDatePicker* timeCtl = GetChild<WinObj::CDatePicker>(IDC_TIMEPICKER1 + index);
+		timeCtl->SetSystemTime(GDT_VALID, systemTime);
+		delete timeCtl;
+	}
+
 	void InitDateTimeCtls(const str& lpFileName)
 	{
 		SYSTEMTIME s[3];
 		MyGetFileTime(lpFileName, s);
 		for (int i = 0; i < 3; i++)
 		{
-			DateTime_SetSystemtime(GETDATEPICKER(i), GDT_VALID, &s[i]);
-			DateTime_SetSystemtime(GETTIMEPICKER(i), GDT_VALID, &s[i]);
+			SetSystemTime(i, &s[i]);
 		}
 	}
 
@@ -244,8 +255,7 @@ public:
 	{
 		SYSTEMTIME s;
 		GetLocalTime(&s);
-		DateTime_SetSystemtime(GETDATEPICKER(id - IDC_NOW1), GDT_VALID, &s);
-		DateTime_SetSystemtime(GETTIMEPICKER(id - IDC_NOW1), GDT_VALID, &s);
+		SetSystemTime(id - IDC_NOW1, &s);
 		Changed();
 	}
 
@@ -255,8 +265,7 @@ public:
 		LPCTSTR lpFileName = NULL;
 		int it;
 
-		if (IsDlgButtonChecked(hWnd, IDC_ATTRIBUTES) != BST_CHECKED &&
-		    IsDlgButtonChecked(hWnd, IDC_TIMES) != BST_CHECKED)
+		if (IsDlgButtonChecked(IDC_ATTRIBUTES) != BST_CHECKED && IsDlgButtonChecked(IDC_TIMES) != BST_CHECKED)
 			return true;
 
 		if (hasfolders)
@@ -289,14 +298,14 @@ public:
 			}
 		}
 
-		if (IsDlgButtonChecked(hWnd, IDC_ATTRIBUTES) == BST_CHECKED)
+		if (IsDlgButtonChecked(IDC_ATTRIBUTES) == BST_CHECKED)
 		{
 			// set file attributes
 
-			UINT bArchive  = IsDlgButtonChecked(hWnd, IDC_ARCHIVE);
-			UINT bReadOnly = IsDlgButtonChecked(hWnd, IDC_READONLY);
-			UINT bHidden   = IsDlgButtonChecked(hWnd, IDC_HIDDEN);
-			UINT bSystem   = IsDlgButtonChecked(hWnd, IDC_SYSTEM);
+			UINT bArchive  = IsDlgButtonChecked(IDC_ARCHIVE);
+			UINT bReadOnly = IsDlgButtonChecked(IDC_READONLY);
+			UINT bHidden   = IsDlgButtonChecked(IDC_HIDDEN);
+			UINT bSystem   = IsDlgButtonChecked(IDC_SYSTEM);
 
 			DWORD orMask, andMask;
 			prepareMasks(&orMask, &andMask, bArchive, bReadOnly, bHidden, bSystem);
@@ -309,21 +318,21 @@ public:
 				MySetFileAttrs(templist[it], orMask, andMask);
 			}
 
-			bInitArchive  = IsDlgButtonChecked(hWnd, IDC_ARCHIVE);
-			bInitReadOnly = IsDlgButtonChecked(hWnd, IDC_READONLY);
-			bInitHidden   = IsDlgButtonChecked(hWnd, IDC_HIDDEN);
-			bInitSystem   = IsDlgButtonChecked(hWnd, IDC_SYSTEM);
+			bInitArchive  = IsDlgButtonChecked(IDC_ARCHIVE);
+			bInitReadOnly = IsDlgButtonChecked(IDC_READONLY);
+			bInitHidden   = IsDlgButtonChecked(IDC_HIDDEN);
+			bInitSystem   = IsDlgButtonChecked(IDC_SYSTEM);
 		}
 
-		if (IsDlgButtonChecked(hWnd, IDC_TIMES) == BST_CHECKED)
+		if (IsDlgButtonChecked(IDC_TIMES) == BST_CHECKED)
 		{
 			bool failure = false;
 			FILETIME ftCreate, ftLastAccess, ftLastWrite;
 			LPFILETIME lpftCreate = NULL, lpftLastAccess = NULL, lpftLastWrite = NULL;
 
-			if (IsDlgButtonChecked(hWnd, IDC_ONE_TIME) == BST_CHECKED)
+			if (IsDlgButtonChecked(IDC_ONE_TIME) == BST_CHECKED)
 			{
-				if (!GET_SOME_FILETIME(0, &ftCreate))
+				if (!GetSomeFileTime(0, &ftCreate))
 				{
 					// generic failure
 					failure = true;
@@ -335,9 +344,9 @@ public:
 			}
 			else
 			{
-				if (IsDlgButtonChecked(hWnd, IDC_CREATE) == BST_CHECKED)
+				if (IsDlgButtonChecked(IDC_CREATE) == BST_CHECKED)
 				{
-					if (!GET_SOME_FILETIME(0, &ftCreate))
+					if (!GetSomeFileTime(0, &ftCreate))
 					{
 						failure = true;
 					}
@@ -347,9 +356,9 @@ public:
 					}
 				}
 
-				if (!failure && IsDlgButtonChecked(hWnd, IDC_LAST_ACCESS) == BST_CHECKED)
+				if (!failure && IsDlgButtonChecked(IDC_LAST_ACCESS) == BST_CHECKED)
 				{
-					if (!GET_SOME_FILETIME(1, &ftLastAccess))
+					if (!GetSomeFileTime(1, &ftLastAccess))
 					{
 						failure = true;
 					}
@@ -359,9 +368,9 @@ public:
 					}
 				}
 
-				if (!failure && IsDlgButtonChecked(hWnd, IDC_LAST_WRITE) == BST_CHECKED)
+				if (!failure && IsDlgButtonChecked(IDC_LAST_WRITE) == BST_CHECKED)
 				{
-					if (!GET_SOME_FILETIME(2, &ftLastWrite))
+					if (!GetSomeFileTime(2, &ftLastWrite))
 					{
 						failure = true;
 					}
@@ -374,7 +383,7 @@ public:
 
 			if (!failure)
 			{
-				bool includeReadOnly = IsDlgButtonChecked(hWnd, IDC_READONLY_TOO) == BST_CHECKED;
+				bool includeReadOnly = IsDlgButtonChecked(IDC_READONLY_TOO) == BST_CHECKED;
 				for (it = 0; it < templist.size(); it++)
 				{
 					bool restoreReadOnly = false;
@@ -406,7 +415,7 @@ public:
 
 	void Changed()
 	{
-		SendMessage(GetParent(hWnd), PSM_CHANGED, (WPARAM)hWnd, 0);
+		NotifyParentChanged();
 	}
 
 	void Nag()
@@ -414,10 +423,9 @@ public:
 		DWORD test = GetTickCount();
 		do
 		{
-			MessageBox(hWnd,
-			           _T("ChangeFileTimePS is shareware. Visit http://nikosgeorgiou.tripod.com to find out how to ")
-			           _T("become a registered user and get rid of this message."),
-			           _T("Shareware reminder"), MB_ICONINFORMATION);
+			MsgBox(_T("ChangeFileTimePS is shareware. Visit http://nikosgeorgiou.tripod.com to find out how to ")
+			       _T("become a registered user and get rid of this message."),
+			       _T("Shareware reminder"), MB_ICONINFORMATION);
 			test = GetTickCount() - test;
 		} while (test < 2000);
 	}
@@ -436,12 +444,12 @@ public:
 	void initCheckBox(UINT ctlID, UINT value)
 	{
 		if (value == BST_INDETERMINATE)
-			SendDlgItemMessage(hWnd, ctlID, BM_SETSTYLE, BS_AUTO3STATE, 0);
+			SendDlgItemMessage(ctlID, BM_SETSTYLE, BS_AUTO3STATE, 0);
 
-		CheckDlgButton(hWnd, ctlID, value);
+		CheckDlgButton(ctlID, value);
 	}
 
-	LRESULT Handler(UINT msg, WPARAM wParam, LPARAM lParam)
+	virtual LRESULT OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		int it;
 
@@ -453,7 +461,7 @@ public:
 			for (it = 0; it < mylist.size(); it++)
 			{
 
-				SendDlgItemMessage(hWnd, IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)mylist[it].c_str());
+				SendDlgItemMessage(IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)mylist[it].c_str());
 				DWORD attrs = GetFileAttributes(mylist[it].c_str());
 
 				checkFileAttribute(attrs, FILE_ATTRIBUTE_ARCHIVE, &bArchive, it == 0);
@@ -500,11 +508,7 @@ public:
 				{
 					Nag();
 				}
-#if _MSC_VER > 1200
-				SetWindowLongPtr(hWnd, DWLP_MSGRESULT, (result) ? PSNRET_NOERROR : PSNRET_INVALID);
-#else
-				SetWindowLong(hWnd, DWL_MSGRESULT, result ? PSNRET_NOERROR : PSNRET_INVALID);
-#endif
+				SetDialogMessageResult(result ? PSNRET_NOERROR : PSNRET_INVALID);
 				return 1;
 				break;
 

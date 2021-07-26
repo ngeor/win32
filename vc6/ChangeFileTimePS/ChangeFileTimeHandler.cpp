@@ -5,6 +5,7 @@
 #else
 #include "ChangeFileTimePS.h"
 #endif
+#include "..\WinObj\Instance.h"
 #include "ChangeFileTimeHandler.h"
 #include "SimplePage.h"
 
@@ -54,17 +55,10 @@ HRESULT CChangeFileTimeHandler::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARA
 	ic.dwSize = sizeof(ic);
 	InitCommonControlsEx(&ic);
 
-	PROPSHEETPAGE p;
-	CSimplePage* newPage = new CSimplePage(filelist, hasfolders);
-	ZeroMemory(&p, sizeof(p));
-	p.dwSize      = sizeof(p);
-	p.dwFlags     = PSP_USEICONID;
-	p.hInstance   = _Module.GetModuleInstance();
-	p.pszTemplate = MAKEINTRESOURCE(IDD_SIMPLE_PAGE);
-	p.pfnDlgProc  = (DLGPROC)CSimplePage::dialogProc;
-	p.lParam      = (LPARAM)newPage;
-	p.pszIcon     = MAKEINTRESOURCE(IDI_ICON1);
-	lpfnAddPage(CreatePropertySheetPage(&p), lParam);
-
+	// TODO how to delete these two variables
+	WinObj::CInstance* instance   = new WinObj::CInstance(_Module.GetModuleInstance());
+	CSimplePage* newPage          = new CSimplePage(*instance, filelist, hasfolders);
+	HPROPSHEETPAGE hPropSheetPage = newPage->CreatePropertyPage(IDD_SIMPLE_PAGE, IDI_ICON1);
+	lpfnAddPage(hPropSheetPage, lParam);
 	return NOERROR;
 }

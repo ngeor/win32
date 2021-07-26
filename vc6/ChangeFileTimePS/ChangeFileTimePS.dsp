@@ -100,14 +100,6 @@ SOURCE=.\ChangeFileTimePS.idl
 # End Source File
 # Begin Source File
 
-SOURCE=.\ObjectWindow.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\PropertyPageDialog.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\SimplePage.cpp
 # End Source File
 # Begin Source File
@@ -122,14 +114,6 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\ChangeFileTimeHandler.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ObjectWindow.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\PropertyPageDialog.h
 # End Source File
 # Begin Source File
 

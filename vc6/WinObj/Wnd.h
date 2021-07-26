@@ -49,6 +49,48 @@ public:
 	bool GetDlgItemClientRect(int id, LPRECT rect);
 
 	LRESULT SendDlgItemMessage(int id, UINT msg, WPARAM wParam, LPARAM lParam);
+
+	UINT IsDlgButtonChecked(int dlgItem);
+
+	bool CheckDlgButton(int dlgItem, UINT flags);
+
+	bool CheckRadioButton(int first, int last, int checked);
+
+	bool EnableDlgItem(int dlgItem, bool enable);
+
+	bool ShowDlgItem(int dlgItem, int flags);
+
+	int MsgBox(LPCTSTR text, LPCTSTR caption, UINT flags);
+
+	template <typename T> T* GetChild(int dlgItem)
+	{
+		HWND hChild = ::GetDlgItem(GetHandle(), dlgItem);
+		if (hChild != NULL)
+		{
+			return new T(hChild);
+		}
+		else
+		{
+			return NULL;
+		}
+	}
 };
+
+class CDatePicker : public CWnd
+{
+public:
+	CDatePicker(HWND hWnd) : CWnd(hWnd)
+	{
+	}
+	bool SetSystemTime(int flags, LPSYSTEMTIME systemTime)
+	{
+		return DateTime_SetSystemtime(GetHandle(), flags, systemTime) != 0;
+	}
+	UINT GetSystemTime(LPSYSTEMTIME systemTime)
+	{
+		return DateTime_GetSystemtime(GetHandle(), systemTime);
+	}
+};
+
 } // namespace WinObj
 #endif // !defined(AFX_WND_H__93530528_8038_459B_9C73_D156D73F67BA__INCLUDED_)

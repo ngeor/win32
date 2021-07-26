@@ -15,60 +15,71 @@ str IncludeTrailingBackSlash(const str& buf)
 	return buf;
 }
 
-BOOL CALLBACK RecurseModeDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+class RecurseModeDialog : public WinObj::CDialog
 {
-	static LPTSTR filter;
-	switch (msg)
-	{
-	case WM_INITDIALOG:
-		filter = (LPTSTR)lParam;
-		CheckRadioButton(hWnd, IDC_APPLY_SIMPLE, IDC_APPLY_RECURSE, IDC_APPLY_SIMPLE);
-		CheckDlgButton(hWnd, IDC_FILES, BST_CHECKED);
-		CheckDlgButton(hWnd, IDC_FOLDERS, BST_CHECKED);
-		return 1;
-		break;
+public:
+	TCHAR filter[MAX_PATH];
 
-	case WM_CLOSE:
-		EndDialog(hWnd, 0);
-		break;
-	case WM_COMMAND:
-		switch (LOWORD(wParam))
+	RecurseModeDialog(const WinObj::CInstance& app) : WinObj::CDialog(app)
+	{
+	}
+
+	virtual LRESULT OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (msg)
 		{
-		case IDOK:
-			if (IsDlgButtonChecked(hWnd, IDC_APPLY_SIMPLE) == BST_CHECKED)
-				EndDialog(hWnd, RECURSE_SIMPLE);
-			else
-			{
-				int ret = 0;
-				if (IsDlgButtonChecked(hWnd, IDC_FILES) == BST_CHECKED)
-					ret |= RECURSE_FILES;
-				if (IsDlgButtonChecked(hWnd, IDC_FOLDERS) == BST_CHECKED)
-					ret |= RECURSE_FOLDERS;
-				if (IsDlgButtonChecked(hWnd, IDC_NOT_FOLDER) == BST_CHECKED)
-					ret |= RECURSE_SKIP_ROOT;
-				GetDlgItemText(hWnd, IDC_FILTER, filter, MAX_PATH);
-				EndDialog(hWnd, ret);
-			}
+		case WM_INITDIALOG:
+			CheckRadioButton(IDC_APPLY_SIMPLE, IDC_APPLY_RECURSE, IDC_APPLY_SIMPLE);
+			CheckDlgButton(IDC_FILES, BST_CHECKED);
+			CheckDlgButton(IDC_FOLDERS, BST_CHECKED);
+			return 1;
 			break;
-		case IDCANCEL:
-			EndDialog(hWnd, 0);
+
+		case WM_CLOSE:
+			EndDialog(0);
+			break;
+		case WM_COMMAND:
+			switch (LOWORD(wParam))
+			{
+			case IDOK:
+				if (IsDlgButtonChecked(IDC_APPLY_SIMPLE) == BST_CHECKED)
+					EndDialog(RECURSE_SIMPLE);
+				else
+				{
+					int ret = 0;
+					if (IsDlgButtonChecked(IDC_FILES) == BST_CHECKED)
+						ret |= RECURSE_FILES;
+					if (IsDlgButtonChecked(IDC_FOLDERS) == BST_CHECKED)
+						ret |= RECURSE_FOLDERS;
+					if (IsDlgButtonChecked(IDC_NOT_FOLDER) == BST_CHECKED)
+						ret |= RECURSE_SKIP_ROOT;
+					GetDlgItemText(IDC_FILTER, filter, MAX_PATH);
+					EndDialog(ret);
+				}
+				break;
+			case IDCANCEL:
+				EndDialog(0);
+				break;
+			default:
+				break;
+			}
 			break;
 		default:
 			break;
 		}
-		break;
-	default:
-		break;
+		return 0;
 	}
-	return 0;
-}
+};
 
 int CSimplePage::RecurseMode()
 {
-	int ret = DialogBoxParam(_Module.GetModuleInstance(), MAKEINTRESOURCE(IDD_RECURSE), hWnd,
-	                         (DLGPROC)RecurseModeDlgProc, (LPARAM)recurseFilter);
+	RecurseModeDialog dlg(GetInstance());
+	int ret = dlg.Modal(*this, IDD_RECURSE);
+	lstrcpy(recurseFilter, dlg.filter);
 	if (lstrlen(recurseFilter) == 0)
+	{
 		lstrcpy(recurseFilter, _T("*.*"));
+	}
 
 	return ret;
 }
