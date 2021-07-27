@@ -2,9 +2,9 @@
 //
 
 #include "stdafx.h"
+#include "..\WinObjCommDlg\OpenFileName.h"
 #include "..\WinObj\WinObj.h"
 #include "resource.h"
-#include "..\WinObjCommDlg\OpenFileName.h"
 
 #define ID_TOOLBAR       500
 #define ID_CMD_NEW_FILE  501

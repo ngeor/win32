@@ -9,12 +9,12 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "..\WinObjCommCtrl\DateTimePicker.h"
+#include "..\WinObjCommCtrl\PropSheet.h"
 #include "..\WinObj\Dialog.h"
 #include "..\WinObj\Instance.h"
 #include "..\WinObj\str.h"
 #include "resource.h"
-#include "..\WinObjCommCtrl\DateTimePicker.h"
-#include "..\WinObjCommCtrl\PropSheet.h"
 
 #define RECURSE_SIMPLE    1
 #define RECURSE_FILES     2
