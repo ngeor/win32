@@ -14,6 +14,8 @@
 
 #include <windows.h>
 #include <commdlg.h>
+#include <string>
+#include <tchar.h>
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

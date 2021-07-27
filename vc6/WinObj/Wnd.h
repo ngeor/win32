@@ -63,26 +63,6 @@ public:
 	int MsgBox(LPCTSTR text, LPCTSTR caption, UINT flags);
 };
 
-class CDatePicker : public CWnd
-{
-public:
-	CDatePicker(HWND hWnd) : CWnd(hWnd)
-	{
-	}
-
-	CDatePicker(const CWnd& parent, int id) : CWnd(::GetDlgItem(parent.GetHandle(), id))
-	{
-	}
-
-	bool SetSystemTime(int flags, LPSYSTEMTIME systemTime)
-	{
-		return DateTime_SetSystemtime(GetHandle(), flags, systemTime) != 0;
-	}
-	UINT GetSystemTime(LPSYSTEMTIME systemTime)
-	{
-		return DateTime_GetSystemtime(GetHandle(), systemTime);
-	}
-};
 
 } // namespace WinObj
 #endif // !defined(AFX_WND_H__93530528_8038_459B_9C73_D156D73F67BA__INCLUDED_)

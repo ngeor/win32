@@ -101,10 +101,6 @@ SOURCE=.\MessageLoop.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenFileName.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -139,10 +135,6 @@ SOURCE=.\Instance.h
 # Begin Source File
 
 SOURCE=.\MessageLoop.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OpenFileName.h
 # End Source File
 # Begin Source File
 
