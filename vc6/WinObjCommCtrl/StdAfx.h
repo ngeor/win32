@@ -14,6 +14,8 @@
 
 #include <windows.h>
 #include <commctrl.h>
+#include <assert.h>
+#include <string>
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

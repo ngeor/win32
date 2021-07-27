@@ -13,6 +13,8 @@
 #include "..\WinObj\Instance.h"
 #include "..\WinObj\str.h"
 #include "resource.h"
+#include "..\WinObjCommCtrl\DateTimePicker.h"
+#include "..\WinObjCommCtrl\PropSheet.h"
 
 #define RECURSE_SIMPLE    1
 #define RECURSE_FILES     2
@@ -34,7 +36,7 @@
 		return 0;                                                                                                      \
 	}
 
-class CSimplePage : public WinObj::CDialog
+class CSimplePage : public WinObj::CPropSheet
 {
 private:
 	void recurseThat(const str& szDir);
@@ -47,7 +49,7 @@ private:
 	UINT bInitArchive, bInitReadOnly, bInitHidden, bInitSystem;
 
 public:
-	CSimplePage(const WinObj::CInstance& app, string_list& otherList, bool hasfolders) : WinObj::CDialog(app)
+	CSimplePage(const WinObj::CInstance& app, string_list& otherList, bool hasfolders) : WinObj::CPropSheet(app)
 	{
 		int it;
 
@@ -164,8 +166,8 @@ public:
 
 	BOOL GetSomeFileTime(int ctlIndex, LPFILETIME ft)
 	{
-		WinObj::CDatePicker dateCtl(*this, IDC_DATEPICKER1 + ctlIndex);
-		WinObj::CDatePicker timeCtl(*this, IDC_TIMEPICKER1 + ctlIndex);
+		WinObj::CDateTimePicker dateCtl(*this, IDC_DATEPICKER1 + ctlIndex);
+		WinObj::CDateTimePicker timeCtl(*this, IDC_TIMEPICKER1 + ctlIndex);
 		SYSTEMTIME p1;
 		SYSTEMTIME p2;
 		bool validDate = dateCtl.GetSystemTime(&p1) == GDT_VALID;
@@ -231,9 +233,9 @@ public:
 
 	void SetSystemTime(int index, LPSYSTEMTIME systemTime)
 	{
-		WinObj::CDatePicker dateCtl(*this, IDC_DATEPICKER1 + index);
+		WinObj::CDateTimePicker dateCtl(*this, IDC_DATEPICKER1 + index);
 		dateCtl.SetSystemTime(GDT_VALID, systemTime);
-		WinObj::CDatePicker timeCtl(*this, IDC_TIMEPICKER1 + index);
+		WinObj::CDateTimePicker timeCtl(*this, IDC_TIMEPICKER1 + index);
 		timeCtl.SetSystemTime(GDT_VALID, systemTime);
 	}
 

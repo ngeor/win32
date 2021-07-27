@@ -195,6 +195,9 @@
     <None Include="ChangeFileTimePS.def" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WinObjCommCtrl\WinObjCommCtrl.vcxproj">
+      <Project>{1692aec0-c848-49d8-a0ab-99a8763c9096}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\WinObj\WinObj.vcxproj">
       <Project>{1b1bb78f-c09c-48fb-8312-79df14235886}</Project>
     </ProjectReference>

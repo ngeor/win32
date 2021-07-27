@@ -13,7 +13,7 @@
 
 namespace WinObj
 {
-class CDateTimePicker
+class CDateTimePicker : public CWnd
 {
 public:
 	CDateTimePicker(const CWnd& parent, int id);
