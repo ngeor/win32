@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChangeFileTimeHandler.h" />
+    <ClInclude Include="RecurseModeDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SimplePage.h" />
     <ClInclude Include="stdafx.h" />
@@ -180,6 +181,7 @@
   <ItemGroup>
     <ClCompile Include="ChangeFileTimeHandler.cpp" />
     <ClCompile Include="ChangeFileTimePS.cpp" />
+    <ClCompile Include="RecurseModeDialog.cpp" />
     <ClCompile Include="SimplePage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -100,6 +100,10 @@ SOURCE=.\ChangeFileTimePS.idl
 # End Source File
 # Begin Source File
 
+SOURCE=.\RecurseModeDialog.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SimplePage.cpp
 # End Source File
 # Begin Source File
@@ -114,6 +118,10 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\ChangeFileTimeHandler.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\RecurseModeDialog.h
 # End Source File
 # Begin Source File
 
