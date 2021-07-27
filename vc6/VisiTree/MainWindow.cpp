@@ -3,6 +3,7 @@
 #include "About.h"
 #include "Render.h"
 #include "resource.h"
+#include "..\WinObjCommDlg\OpenFileName.h"
 
 #define DEFAULT_EXTENSION _T("emf")
 

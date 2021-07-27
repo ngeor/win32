@@ -109,7 +109,6 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,7 +146,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -191,6 +189,9 @@
     <Image Include="VisiTree.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WinObjCommDlg\WinObjCommDlg.vcxproj">
+      <Project>{26b9ab78-3c5b-4f84-b928-392a209059b9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\WinObj\WinObj.vcxproj">
       <Project>{1b1bb78f-c09c-48fb-8312-79df14235886}</Project>
     </ProjectReference>
