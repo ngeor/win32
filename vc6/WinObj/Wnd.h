@@ -61,19 +61,6 @@ public:
 	bool ShowDlgItem(int dlgItem, int flags);
 
 	int MsgBox(LPCTSTR text, LPCTSTR caption, UINT flags);
-
-	template <typename T> T* GetChild(int dlgItem)
-	{
-		HWND hChild = ::GetDlgItem(GetHandle(), dlgItem);
-		if (hChild != NULL)
-		{
-			return new T(hChild);
-		}
-		else
-		{
-			return NULL;
-		}
-	}
 };
 
 class CDatePicker : public CWnd
@@ -82,6 +69,11 @@ public:
 	CDatePicker(HWND hWnd) : CWnd(hWnd)
 	{
 	}
+
+	CDatePicker(const CWnd& parent, int id) : CWnd(::GetDlgItem(parent.GetHandle(), id))
+	{
+	}
+
 	bool SetSystemTime(int flags, LPSYSTEMTIME systemTime)
 	{
 		return DateTime_SetSystemtime(GetHandle(), flags, systemTime) != 0;

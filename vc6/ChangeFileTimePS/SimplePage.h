@@ -164,15 +164,13 @@ public:
 
 	BOOL GetSomeFileTime(int ctlIndex, LPFILETIME ft)
 	{
-		WinObj::CDatePicker* dateCtl = GetChild<WinObj::CDatePicker>(IDC_DATEPICKER1 + ctlIndex);
-		WinObj::CDatePicker* timeCtl = GetChild<WinObj::CDatePicker>(IDC_TIMEPICKER1 + ctlIndex);
+		WinObj::CDatePicker dateCtl(*this, IDC_DATEPICKER1 + ctlIndex);
+		WinObj::CDatePicker timeCtl(*this, IDC_TIMEPICKER1 + ctlIndex);
 		SYSTEMTIME p1;
 		SYSTEMTIME p2;
-		bool validDate = dateCtl->GetSystemTime(&p1) == GDT_VALID;
-		bool validTime = timeCtl->GetSystemTime(&p2) == GDT_VALID;
+		bool validDate = dateCtl.GetSystemTime(&p1) == GDT_VALID;
+		bool validTime = timeCtl.GetSystemTime(&p2) == GDT_VALID;
 		FILETIME f1;
-		delete timeCtl;
-		delete dateCtl;
 		if (validDate && validTime)
 		{
 			p1.wHour         = p2.wHour;
@@ -233,12 +231,10 @@ public:
 
 	void SetSystemTime(int index, LPSYSTEMTIME systemTime)
 	{
-		WinObj::CDatePicker* dateCtl = GetChild<WinObj::CDatePicker>(IDC_DATEPICKER1 + index);
-		dateCtl->SetSystemTime(GDT_VALID, systemTime);
-		delete dateCtl;
-		WinObj::CDatePicker* timeCtl = GetChild<WinObj::CDatePicker>(IDC_TIMEPICKER1 + index);
-		timeCtl->SetSystemTime(GDT_VALID, systemTime);
-		delete timeCtl;
+		WinObj::CDatePicker dateCtl(*this, IDC_DATEPICKER1 + index);
+		dateCtl.SetSystemTime(GDT_VALID, systemTime);
+		WinObj::CDatePicker timeCtl(*this, IDC_TIMEPICKER1 + index);
+		timeCtl.SetSystemTime(GDT_VALID, systemTime);
 	}
 
 	void InitDateTimeCtls(const str& lpFileName)
@@ -484,7 +480,7 @@ public:
 			OnOneTimeClick();
 
 			InitDateTimeCtls(mylist[0]);
-
+			return 1;
 			break;
 		case WM_COMMAND:
 			BUTTON_HANDLER(IDC_ATTRIBUTES, OnAttributesClick);
