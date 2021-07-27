@@ -11,8 +11,9 @@
 
 #include "..\WinObj\Wnd.h"
 
-namespace WinObj {
-class CDateTimePicker  
+namespace WinObj
+{
+class CDateTimePicker
 {
 public:
 	CDateTimePicker(const CWnd& parent, int id);
@@ -20,6 +21,6 @@ public:
 	UINT GetSystemTime(LPSYSTEMTIME systemTime);
 	bool SetSystemTime(int flags, LPSYSTEMTIME systemTime);
 };
-}
+} // namespace WinObj
 
 #endif // !defined(AFX_DATETIMEPICKER_H__601048B3_3BDB_4EA1_9A82_8C5A4E03479B__INCLUDED_)

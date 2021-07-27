@@ -89,6 +89,10 @@ SOURCE=.\DateTimePicker.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PropSheet.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -99,6 +103,10 @@ SOURCE=.\StdAfx.cpp
 # Begin Source File
 
 SOURCE=.\DateTimePicker.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PropSheet.h
 # End Source File
 # Begin Source File
 

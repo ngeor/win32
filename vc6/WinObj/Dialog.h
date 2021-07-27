@@ -25,7 +25,6 @@ public:
 	bool Create(int dialogResource);
 	INT_PTR Modal(int dialogResource);
 	INT_PTR Modal(const CWnd& parent, int dialogResource);
-	HPROPSHEETPAGE CreatePropertyPage(int dialogResource, int iconResource = 0);
 
 	/// Message handler for the dialog.
 	virtual LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
@@ -36,8 +35,6 @@ public:
 	bool EndDialog(INT_PTR result = 0);
 
 	void SetDialogMessageResult(LPARAM result);
-
-	void NotifyParentChanged();
 };
 
 } // namespace WinObj
