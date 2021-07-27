@@ -65,7 +65,7 @@ LRESULT CALLBACK __InternalPropSheetBootstrapProc(HWND hWnd, UINT message, WPARA
 	case WM_INITDIALOG:
 		if (lParam)
 		{
-			LPPROPSHEETPAGE lp = (LPPROPSHEETPAGE) lParam;
+			LPPROPSHEETPAGE lp = (LPPROPSHEETPAGE)lParam;
 
 #if _MSC_VER > 1200
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, lp->lParam);
