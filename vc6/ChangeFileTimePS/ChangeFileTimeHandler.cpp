@@ -5,7 +5,6 @@
 #else
 #include "ChangeFileTimePS.h"
 #endif
-#include "..\WinObj\Instance.h"
 #include "ChangeFileTimeHandler.h"
 #include "SimplePage.h"
 
@@ -55,10 +54,14 @@ HRESULT CChangeFileTimeHandler::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARA
 	ic.dwSize = sizeof(ic);
 	InitCommonControlsEx(&ic);
 
-	// TODO how to delete these two variables
-	WinObj::CInstance* instance   = new WinObj::CInstance(_Module.GetModuleInstance());
-	CSimplePage* newPage          = new CSimplePage(*instance, filelist, hasfolders);
-	HPROPSHEETPAGE hPropSheetPage = newPage->CreatePropertyPage(IDD_SIMPLE_PAGE, IDI_ICON1);
+	WinObj::Helper<CSimplePage> helper;
+
+	// TODO this does not work, because this instance gets destroyed before WM_INITDIALOG is called
+	// WM_INITDIALOG is not called until the tab is selected
+	// there needs to be some memory location shared between AddPages and WM_INITDIALOG,
+	// which will also be cleaned up when the process is detached
+	HPROPSHEETPAGE hPropSheetPage = helper.CreatePropertyPage(*_Instance, IDD_SIMPLE_PAGE, IDI_ICON1, (LPARAM)this);
 	lpfnAddPage(hPropSheetPage, lParam);
+
 	return NOERROR;
 }

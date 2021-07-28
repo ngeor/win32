@@ -4,6 +4,12 @@
 
 #include "stdafx.h"
 #include "SimplePage.h"
+#if _MSC_VER > 1200
+#include "ChangeFileTimePS_h.h"
+#else
+#include "ChangeFileTimePS.h"
+#endif
+#include "ChangeFileTimeHandler.h"
 #include "RecurseModeDialog.h"
 
 str IncludeTrailingBackSlash(const str& buf)
@@ -16,20 +22,8 @@ str IncludeTrailingBackSlash(const str& buf)
 	return buf;
 }
 
-CSimplePage::CSimplePage(const WinObj::CInstance& app, string_list& otherList, bool hasfolders)
-	: WinObj::CPropSheet(app)
+CSimplePage::CSimplePage() : WinObj::CPropSheet()
 {
-	int it;
-
-	for (it = 0; it < otherList.size(); it++)
-	{
-		// 'it' points at the next filename.  Allocate a new copy of the string
-		// that the page will own.
-		mylist.push_back(otherList[it]);
-	}
-
-	this->hasfolders = hasfolders;
-	// MessageBox(0, "SimplePage", "", 0);
 }
 
 void CSimplePage::initTempList()
@@ -416,43 +410,61 @@ void CSimplePage::initCheckBox(UINT ctlID, UINT value)
 	CheckDlgButton(ctlID, value);
 }
 
-LRESULT CSimplePage::OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CSimplePage::OnInitDialog(LPARAM lParam)
 {
+	LPPROPSHEETPAGE lpPropSheetPage = (LPPROPSHEETPAGE)lParam;
+	CChangeFileTimeHandler* handler = (CChangeFileTimeHandler*)lpPropSheetPage->lParam;
+	MessageBox(GetHandle(), _T("OnInitDialog"), _T("Caption"), 0);
 	int it;
 
+	for (it = 0; it < handler->filelist.size(); it++)
+	{
+		// 'it' points at the next filename.  Allocate a new copy of the string
+		// that the page will own.
+		mylist.push_back(handler->filelist[it]);
+	}
+
+	this->hasfolders = handler->hasfolders;
+
+	UINT bArchive, bReadOnly, bHidden, bSystem;
+	for (it = 0; it < mylist.size(); it++)
+	{
+
+		SendDlgItemMessage(IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)mylist[it].c_str());
+		DWORD attrs = GetFileAttributes(mylist[it].c_str());
+
+		checkFileAttribute(attrs, FILE_ATTRIBUTE_ARCHIVE, &bArchive, it == 0);
+		checkFileAttribute(attrs, FILE_ATTRIBUTE_READONLY, &bReadOnly, it == 0);
+		checkFileAttribute(attrs, FILE_ATTRIBUTE_HIDDEN, &bHidden, it == 0);
+		checkFileAttribute(attrs, FILE_ATTRIBUTE_SYSTEM, &bSystem, it == 0);
+	}
+
+	initCheckBox(IDC_ARCHIVE, bInitArchive = bArchive);
+	initCheckBox(IDC_READONLY, bInitReadOnly = bReadOnly);
+	initCheckBox(IDC_HIDDEN, bInitHidden = bHidden);
+	initCheckBox(IDC_SYSTEM, bInitSystem = bSystem);
+
+	initCheckBox(IDC_ATTRIBUTES, BST_CHECKED);
+	initCheckBox(IDC_TIMES, BST_CHECKED);
+	initCheckBox(IDC_CREATE, BST_CHECKED);
+	initCheckBox(IDC_LAST_ACCESS, BST_CHECKED);
+	initCheckBox(IDC_LAST_WRITE, BST_CHECKED);
+	initCheckBox(IDC_ONE_TIME, BST_CHECKED);
+	OnOneTimeClick();
+
+	if (mylist.size() > 0)
+	{
+
+		MessageBox(0, "SimplePage", "", 0);
+		InitDateTimeCtls(mylist[0]);
+	}
+	return 1;
+}
+
+LRESULT CSimplePage::OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
+{
 	switch (msg)
 	{
-	case WM_INITDIALOG:
-		UINT bArchive, bReadOnly, bHidden, bSystem;
-
-		for (it = 0; it < mylist.size(); it++)
-		{
-
-			SendDlgItemMessage(IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)mylist[it].c_str());
-			DWORD attrs = GetFileAttributes(mylist[it].c_str());
-
-			checkFileAttribute(attrs, FILE_ATTRIBUTE_ARCHIVE, &bArchive, it == 0);
-			checkFileAttribute(attrs, FILE_ATTRIBUTE_READONLY, &bReadOnly, it == 0);
-			checkFileAttribute(attrs, FILE_ATTRIBUTE_HIDDEN, &bHidden, it == 0);
-			checkFileAttribute(attrs, FILE_ATTRIBUTE_SYSTEM, &bSystem, it == 0);
-		}
-
-		initCheckBox(IDC_ARCHIVE, bInitArchive = bArchive);
-		initCheckBox(IDC_READONLY, bInitReadOnly = bReadOnly);
-		initCheckBox(IDC_HIDDEN, bInitHidden = bHidden);
-		initCheckBox(IDC_SYSTEM, bInitSystem = bSystem);
-
-		initCheckBox(IDC_ATTRIBUTES, BST_CHECKED);
-		initCheckBox(IDC_TIMES, BST_CHECKED);
-		initCheckBox(IDC_CREATE, BST_CHECKED);
-		initCheckBox(IDC_LAST_ACCESS, BST_CHECKED);
-		initCheckBox(IDC_LAST_WRITE, BST_CHECKED);
-		initCheckBox(IDC_ONE_TIME, BST_CHECKED);
-		OnOneTimeClick();
-
-		InitDateTimeCtls(mylist[0]);
-		return 1;
-		break;
 	case WM_COMMAND:
 		BUTTON_HANDLER(IDC_ATTRIBUTES, OnAttributesClick);
 		BUTTON_HANDLER(IDC_TIMES, OnTimesClick);
@@ -487,14 +499,16 @@ LRESULT CSimplePage::OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 	}
+	default:
+		return CPropSheet::OnMessage(msg, wParam, lParam);
 	}
 	return 0;
 }
 
 int CSimplePage::RecurseMode()
 {
-	RecurseModeDialog dlg(GetInstance());
-	int ret = dlg.Modal(*this, IDD_RECURSE);
+	RecurseModeDialog dlg;
+	int ret = dlg.Modal(*GetInstance(), *this, IDD_RECURSE);
 	lstrcpy(recurseFilter, dlg.filter);
 	if (lstrlen(recurseFilter) == 0)
 	{

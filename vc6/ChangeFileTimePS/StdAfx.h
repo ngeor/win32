@@ -22,6 +22,7 @@
 // You may derive a class from CComModule and use it if you want to override
 // something, but do not change the name of _Module
 extern CComModule _Module;
+#include <assert.h>
 #include <atlcom.h>
 #include <comdef.h>
 #include <shellapi.h>
@@ -34,6 +35,9 @@ typedef std::vector<std::wstring> string_list;
 #else
 typedef std::vector<std::string> string_list;
 #endif
+
+#include "..\WinObj\Instance.h"
+extern WinObj::CInstance* _Instance;
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

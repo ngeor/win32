@@ -21,7 +21,7 @@ class RecurseModeDialog : public WinObj::CDialog
 public:
 	TCHAR filter[MAX_PATH];
 
-	RecurseModeDialog(const WinObj::CInstance& app);
+	RecurseModeDialog();
 	virtual LRESULT OnMessage(UINT msg, WPARAM wParam, LPARAM lParam);
 };
 

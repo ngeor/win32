@@ -40,9 +40,10 @@ private:
 	int CbSetItemData(int id, int index, LPARAM data);
 
 public:
-	MainWindow(const WinObj::CInstance &instance);
+	MainWindow();
 	virtual ~MainWindow();
 	virtual LRESULT OnMessage(UINT, WPARAM, LPARAM) OVERRIDE;
+	virtual LRESULT OnInitDialog(LPARAM lParam) OVERRIDE;
 };
 
 #endif

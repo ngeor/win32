@@ -10,7 +10,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-RecurseModeDialog::RecurseModeDialog(const WinObj::CInstance& app) : WinObj::CDialog(app)
+RecurseModeDialog::RecurseModeDialog() : WinObj::CDialog()
 {
 }
 

@@ -44,7 +44,7 @@ private:
 	UINT bInitArchive, bInitReadOnly, bInitHidden, bInitSystem;
 
 public:
-	CSimplePage(const WinObj::CInstance& app, string_list& otherList, bool hasfolders);
+	CSimplePage();
 	virtual ~CSimplePage();
 	void initTempList();
 	void OnAttributesClick();
@@ -66,6 +66,7 @@ public:
 	void checkFileAttribute(DWORD attrs, DWORD attrBit, UINT* value, bool firstTime);
 	void initCheckBox(UINT ctlID, UINT value);
 	virtual LRESULT OnMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT OnInitDialog(LPARAM lParam);
 };
 
 #endif // !defined(AFX_SIMPLEPAGE_H__DDC5DD14_F203_440C_8BF0_3B6998093395__INCLUDED_)
