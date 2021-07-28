@@ -44,7 +44,7 @@ private:
 	UINT bInitArchive, bInitReadOnly, bInitHidden, bInitSystem;
 
 public:
-	CSimplePage();
+	CSimplePage(string_list fileList, bool hasFolders);
 	virtual ~CSimplePage();
 	void initTempList();
 	void OnAttributesClick();

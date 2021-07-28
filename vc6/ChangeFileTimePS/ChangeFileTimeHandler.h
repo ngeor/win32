@@ -19,11 +19,6 @@ public:
 	{
 	}
 
-	virtual ~CChangeFileTimeHandler()
-	{
-		MessageBox(0, _T("Destroyed"), _T("Bye"), 0);
-	}
-
 	DECLARE_REGISTRY_RESOURCEID(IDR_CHANGEFILETIMEHANDLER)
 
 	DECLARE_PROTECT_FINAL_CONSTRUCT()
@@ -34,11 +29,11 @@ public:
 	COM_INTERFACE_ENTRY(IShellExtInit)
 	COM_INTERFACE_ENTRY(IShellPropSheetExt)
 	END_COM_MAP()
+private:
+	// IChangeFileTimeHandler
 	string_list filelist;
 	bool hasfolders;
 
-private:
-	// IChangeFileTimeHandler
 public:
 	// IShellExtInit
 	STDMETHOD(Initialize)(LPCITEMIDLIST, LPDATAOBJECT, HKEY);

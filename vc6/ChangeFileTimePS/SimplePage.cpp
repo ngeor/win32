@@ -22,7 +22,8 @@ str IncludeTrailingBackSlash(const str& buf)
 	return buf;
 }
 
-CSimplePage::CSimplePage() : WinObj::CPropSheet()
+CSimplePage::CSimplePage(string_list fileList, bool hasFolders)
+	: WinObj::CPropSheet(), mylist(fileList), hasfolders(hasFolders)
 {
 }
 
@@ -274,8 +275,6 @@ bool CSimplePage::OnOK()
 		// for each file:
 		for (it = 0; it < templist.size(); it++)
 		{
-			// MessageBox(0, it->c_str(), "", 0);
-
 			MySetFileAttrs(templist[it], orMask, andMask);
 		}
 
@@ -356,7 +355,6 @@ bool CSimplePage::OnOK()
 					if (restoreReadOnly = (attrs & FILE_ATTRIBUTE_READONLY))
 					{
 						SetFileAttributes(templist[it].c_str(), attrs & ~FILE_ATTRIBUTE_READONLY);
-						// MessageBox(0, it->c_str(), "", 0);
 					}
 				}
 
@@ -412,19 +410,7 @@ void CSimplePage::initCheckBox(UINT ctlID, UINT value)
 
 LRESULT CSimplePage::OnInitDialog(LPARAM lParam)
 {
-	LPPROPSHEETPAGE lpPropSheetPage = (LPPROPSHEETPAGE)lParam;
-	CChangeFileTimeHandler* handler = (CChangeFileTimeHandler*)lpPropSheetPage->lParam;
-	MessageBox(GetHandle(), _T("OnInitDialog"), _T("Caption"), 0);
 	int it;
-
-	for (it = 0; it < handler->filelist.size(); it++)
-	{
-		// 'it' points at the next filename.  Allocate a new copy of the string
-		// that the page will own.
-		mylist.push_back(handler->filelist[it]);
-	}
-
-	this->hasfolders = handler->hasfolders;
 
 	UINT bArchive, bReadOnly, bHidden, bSystem;
 	for (it = 0; it < mylist.size(); it++)
@@ -454,8 +440,6 @@ LRESULT CSimplePage::OnInitDialog(LPARAM lParam)
 
 	if (mylist.size() > 0)
 	{
-
-		MessageBox(0, "SimplePage", "", 0);
 		InitDateTimeCtls(mylist[0]);
 	}
 	return 1;
@@ -524,7 +508,6 @@ void CSimplePage::recurseThat(const str& szDir)
 	WIN32_FIND_DATA fd;
 	str buf = IncludeTrailingBackSlash(szDir) + _T("*.*");
 
-	// MessageBox(0, buf, "", 0);
 	if ((fh = FindFirstFile(buf.c_str(), &fd)) != INVALID_HANDLE_VALUE)
 	{
 		do
