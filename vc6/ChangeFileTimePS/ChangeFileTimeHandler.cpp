@@ -8,6 +8,11 @@
 #include "ChangeFileTimeHandler.h"
 #include "SimplePage.h"
 
+bool IsDirectory(LPCTSTR filename)
+{
+	return (GetFileAttributes(filename) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CChangeFileTimeHandler
 
@@ -15,33 +20,31 @@ HRESULT CChangeFileTimeHandler::Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJEC
 {
 	FORMATETC etc;
 	STGMEDIUM stg;
-	TCHAR temp[MAX_PATH];
-
-	//	filelist.clear();
+	TCHAR filename[MAX_PATH];
 
 	etc.cfFormat = CF_HDROP;
 	etc.ptd      = NULL;
 	etc.dwAspect = DVASPECT_CONTENT;
 	etc.lindex   = -1;            // all of the data
 	etc.tymed    = TYMED_HGLOBAL; // HGLOBAL
-	hasFolders   = false;
+
 	if (SUCCEEDED(lpdobj->GetData(&etc, &stg)))
 	{
 		HDROP hDrop   = (HDROP)stg.hGlobal;
 		int fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-
 		for (int i = 0; i < fileCount; i++)
 		{
-			DragQueryFile(hDrop, i, temp, MAX_PATH);
-			if (!hasFolders && (GetFileAttributes(temp) & FILE_ATTRIBUTE_DIRECTORY))
-				hasFolders = true;
-			fileList.push_back(temp);
+			DragQueryFile(hDrop, i, filename, MAX_PATH);
+			hasFolders = hasFolders || IsDirectory(filename);
+			fileList.push_back(filename);
 		}
 		ReleaseStgMedium(&stg);
 		return S_OK;
 	}
 	else
+	{
 		return E_FAIL;
+	}
 }
 
 HRESULT CChangeFileTimeHandler::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
