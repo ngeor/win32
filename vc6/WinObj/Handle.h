@@ -16,9 +16,9 @@ template <typename T> class CHandle
 	T _handle;
 
 public:
-    CHandle() : _handle(NULL)
-    {
-    }
+	CHandle() : _handle(NULL)
+	{
+	}
 
 	CHandle(T handle) : _handle(handle)
 	{
@@ -40,12 +40,12 @@ public:
 		_handle = handle;
 	}
 
-    T Detach()
-    {
-        T currentValue = _handle;
-        _handle = NULL;
-        return currentValue;
-    }
+	T Detach()
+	{
+		T currentValue = _handle;
+		_handle        = NULL;
+		return currentValue;
+	}
 };
 } // namespace WinObj
 
