@@ -13,9 +13,6 @@ bool IsDirectory(LPCTSTR filename)
 	return (GetFileAttributes(filename) & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CChangeFileTimeHandler
-
 HRESULT CChangeFileTimeHandler::Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJECT lpdobj, HKEY hkeyProgID)
 {
 	FORMATETC etc;

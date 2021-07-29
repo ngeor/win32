@@ -37,9 +37,20 @@ private:
 	// IChangeFileTimeHandler
 public:
 	// IShellExtInit
+
+    /// Initialize is called first. The files/folders the user has selected are accessible
+    /// through the lpdobj parameter.
+    ///
+    /// See https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellextinit-initialize
 	STDMETHOD(Initialize)(LPCITEMIDLIST, LPDATAOBJECT, HKEY);
 
 	// IShellPropSheetExt
+
+    /// Called after Initialize in order to add property sheet pages to the properties dialog.
+    /// Note that the method exits without waiting for the properties dialog to exit
+    /// and it is destroyed.
+    ///
+    /// See https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellpropsheetext-addpages
 	STDMETHOD(AddPages)(LPFNADDPROPSHEETPAGE, LPARAM);
 	STDMETHOD(ReplacePage)(UINT, LPFNADDPROPSHEETPAGE, LPARAM)
 	{
