@@ -13,10 +13,10 @@
 #endif
 #include "ChangeFileTimePS_i.c"
 #include "ChangeFileTimeHandler.h"
+#include "GlobalWinObjInstance.h"
 #include "resource.h"
 
 CComModule _Module;
-WinObj::CInstance _WinObjInstance;
 
 BEGIN_OBJECT_MAP(ObjectMap)
 OBJECT_ENTRY(CLSID_ChangeFileTimeHandler, CChangeFileTimeHandler)

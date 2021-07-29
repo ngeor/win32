@@ -14,6 +14,7 @@
 #include "..\WinObj\Dialog.h"
 #include "..\WinObj\Instance.h"
 #include "..\WinObj\str.h"
+#include "StringList.h"
 #include "resource.h"
 
 //#define MULTIPLE_FILES list.getFileCount() > 1

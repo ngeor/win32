@@ -3,6 +3,7 @@
 #ifndef __CHANGEFILETIMEHANDLER_H_
 #define __CHANGEFILETIMEHANDLER_H_
 
+#include "StringList.h"
 #include "resource.h" // main symbols
 
 /////////////////////////////////////////////////////////////////////////////

@@ -100,6 +100,10 @@ SOURCE=.\ChangeFileTimePS.idl
 # End Source File
 # Begin Source File
 
+SOURCE=.\GlobalWinObjInstance.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\RecurseModeDialog.cpp
 # End Source File
 # Begin Source File
@@ -121,6 +125,10 @@ SOURCE=.\ChangeFileTimeHandler.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\GlobalWinObjInstance.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\RecurseModeDialog.h
 # End Source File
 # Begin Source File
@@ -134,6 +142,10 @@ SOURCE=.\SimplePage.h
 # Begin Source File
 
 SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\StringList.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

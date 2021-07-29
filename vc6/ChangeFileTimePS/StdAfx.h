@@ -30,15 +30,6 @@ extern CComModule _Module;
 #include <string>
 #include <vector>
 
-#ifdef UNICODE
-typedef std::vector<std::wstring> string_list;
-#else
-typedef std::vector<std::string> string_list;
-#endif
-
-#include "..\WinObj\Instance.h"
-extern WinObj::CInstance _WinObjInstance;
-
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

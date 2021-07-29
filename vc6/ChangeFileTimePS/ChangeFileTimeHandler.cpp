@@ -6,6 +6,7 @@
 #include "ChangeFileTimePS.h"
 #endif
 #include "ChangeFileTimeHandler.h"
+#include "GlobalWinObjInstance.h"
 #include "SimplePage.h"
 
 bool IsDirectory(LPCTSTR filename)
