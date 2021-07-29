@@ -24,7 +24,7 @@ HRESULT CChangeFileTimeHandler::Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJEC
 	etc.dwAspect = DVASPECT_CONTENT;
 	etc.lindex   = -1;            // all of the data
 	etc.tymed    = TYMED_HGLOBAL; // HGLOBAL
-	hasfolders   = false;
+	hasFolders   = false;
 	if (SUCCEEDED(lpdobj->GetData(&etc, &stg)))
 	{
 		HDROP hDrop   = (HDROP)stg.hGlobal;
@@ -33,9 +33,9 @@ HRESULT CChangeFileTimeHandler::Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJEC
 		for (int i = 0; i < fileCount; i++)
 		{
 			DragQueryFile(hDrop, i, temp, MAX_PATH);
-			if (!hasfolders && (GetFileAttributes(temp) & FILE_ATTRIBUTE_DIRECTORY))
-				hasfolders = true;
-			filelist.push_back(temp);
+			if (!hasFolders && (GetFileAttributes(temp) & FILE_ATTRIBUTE_DIRECTORY))
+				hasFolders = true;
+			fileList.push_back(temp);
 		}
 		ReleaseStgMedium(&stg);
 		return S_OK;
@@ -46,7 +46,6 @@ HRESULT CChangeFileTimeHandler::Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJEC
 
 HRESULT CChangeFileTimeHandler::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 {
-	// TODO move to Initialize?
 	InitCommonControls();
 
 	INITCOMMONCONTROLSEX ic;
@@ -54,7 +53,7 @@ HRESULT CChangeFileTimeHandler::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARA
 	ic.dwSize = sizeof(ic);
 	InitCommonControlsEx(&ic);
 
-	CSimplePage* simplePage       = new CSimplePage(filelist, hasfolders);
+	CSimplePage* simplePage       = new CSimplePage(fileList, hasFolders);
 	HPROPSHEETPAGE hPropSheetPage = simplePage->CreatePropertyPage(*_Instance, IDD_SIMPLE_PAGE, IDI_ICON1);
 	lpfnAddPage(hPropSheetPage, lParam);
 

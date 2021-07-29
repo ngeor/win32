@@ -29,11 +29,12 @@ public:
 	COM_INTERFACE_ENTRY(IShellExtInit)
 	COM_INTERFACE_ENTRY(IShellPropSheetExt)
 	END_COM_MAP()
-private:
-	// IChangeFileTimeHandler
-	string_list filelist;
-	bool hasfolders;
 
+private:
+	string_list fileList;
+	bool hasFolders;
+
+	// IChangeFileTimeHandler
 public:
 	// IShellExtInit
 	STDMETHOD(Initialize)(LPCITEMIDLIST, LPDATAOBJECT, HKEY);
