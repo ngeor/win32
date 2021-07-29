@@ -16,6 +16,10 @@ template <typename T> class CHandle
 	T _handle;
 
 public:
+    CHandle() : _handle(NULL)
+    {
+    }
+
 	CHandle(T handle) : _handle(handle)
 	{
 	}
@@ -24,7 +28,6 @@ public:
 	{
 	}
 
-	// TODO remove or at least reduce visibility
 	T GetHandle() const
 	{
 		return _handle;
