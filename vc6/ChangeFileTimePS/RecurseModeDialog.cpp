@@ -58,5 +58,5 @@ LRESULT RecurseModeDialog::OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 	default:
 		break;
 	}
-	return WinObj::CDialog::OnMessage(msg, wParam, lParam);
+	return CDialog::OnMessage(msg, wParam, lParam);
 }
