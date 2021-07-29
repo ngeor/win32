@@ -41,6 +41,8 @@ public:
 	MainDialog();
 	virtual ~MainDialog();
 	virtual LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
+
+protected:
 	virtual LRESULT OnInitDialog(LPARAM lParam);
 };
 

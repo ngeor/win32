@@ -14,17 +14,18 @@ RecurseModeDialog::RecurseModeDialog() : WinObj::CDialog()
 {
 }
 
+LRESULT RecurseModeDialog::OnInitDialog(LPARAM lParam)
+{
+	CheckRadioButton(IDC_APPLY_SIMPLE, IDC_APPLY_RECURSE, IDC_APPLY_SIMPLE);
+	CheckDlgButton(IDC_FILES, BST_CHECKED);
+	CheckDlgButton(IDC_FOLDERS, BST_CHECKED);
+	return 1;
+}
+
 LRESULT RecurseModeDialog::OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-	case WM_INITDIALOG:
-		CheckRadioButton(IDC_APPLY_SIMPLE, IDC_APPLY_RECURSE, IDC_APPLY_SIMPLE);
-		CheckDlgButton(IDC_FILES, BST_CHECKED);
-		CheckDlgButton(IDC_FOLDERS, BST_CHECKED);
-		return 1;
-		break;
-
 	case WM_CLOSE:
 		EndDialog(0);
 		break;
@@ -57,5 +58,5 @@ LRESULT RecurseModeDialog::OnMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 	default:
 		break;
 	}
-	return 0;
+	return WinObj::CDialog::OnMessage(msg, wParam, lParam);
 }

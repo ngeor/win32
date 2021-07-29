@@ -5,7 +5,6 @@
 //      run nmake -f ChangeFileTimePSps.mk in the project directory.
 
 #include "stdafx.h"
-#include <initguid.h>
 #if _MSC_VER > 1200
 #include "ChangeFileTimePS_h.h"
 #else

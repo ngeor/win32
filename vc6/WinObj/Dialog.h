@@ -28,6 +28,8 @@ public:
 
 	/// Message handler for the dialog.
 	virtual LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
+
+protected:
 	virtual LRESULT OnInitDialog(LPARAM lParam);
 
 	/// Gets the application instance.

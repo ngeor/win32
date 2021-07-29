@@ -23,6 +23,9 @@ public:
 
 	RecurseModeDialog();
 	virtual LRESULT OnMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+
+protected:
+	virtual LRESULT OnInitDialog(LPARAM lParam);
 };
 
 #endif // !defined(AFX_RECURSEMODEDIALOG_H__F95AB691_F21E_4E8E_BB70_9FE3268C4383__INCLUDED_)

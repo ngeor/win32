@@ -43,10 +43,6 @@ private:
 	int recurseMode;
 	TCHAR recurseFilter[MAX_PATH];
 	UINT bInitArchive, bInitReadOnly, bInitHidden, bInitSystem;
-
-public:
-	CSimplePage(string_list fileList, bool hasFolders);
-	virtual ~CSimplePage();
 	void initTempList();
 	void OnAttributesClick();
 	void OnTimesClick();
@@ -66,7 +62,14 @@ public:
 	void Nag();
 	void checkFileAttribute(DWORD attrs, DWORD attrBit, UINT* value, bool firstTime);
 	void initCheckBox(UINT ctlID, UINT value);
+
+public:
+	CSimplePage(string_list fileList, bool hasFolders);
+	virtual ~CSimplePage();
+
 	virtual LRESULT OnMessage(UINT msg, WPARAM wParam, LPARAM lParam);
+
+protected:
 	virtual LRESULT OnInitDialog(LPARAM lParam);
 };
 

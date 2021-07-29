@@ -43,6 +43,8 @@ public:
 	MainWindow();
 	virtual ~MainWindow();
 	virtual LRESULT OnMessage(UINT, WPARAM, LPARAM) OVERRIDE;
+
+protected:
 	virtual LRESULT OnInitDialog(LPARAM lParam) OVERRIDE;
 };
 
