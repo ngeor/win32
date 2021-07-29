@@ -16,7 +16,7 @@
 #include "resource.h"
 
 CComModule _Module;
-WinObj::CInstance _Instance;
+WinObj::CInstance _WinObjInstance;
 
 BEGIN_OBJECT_MAP(ObjectMap)
 OBJECT_ENTRY(CLSID_ChangeFileTimeHandler, CChangeFileTimeHandler)
@@ -31,12 +31,12 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /*lpR
 	{
 		_Module.Init(ObjectMap, hInstance, &LIBID_CHANGEFILETIMEPSLib);
 		DisableThreadLibraryCalls(hInstance);
-		_Instance.SetHandle(hInstance);
+		_WinObjInstance.SetHandle(hInstance);
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
 		_Module.Term();
-		_Instance.Detach();
+		_WinObjInstance.Detach();
 	}
 	return TRUE; // ok
 }

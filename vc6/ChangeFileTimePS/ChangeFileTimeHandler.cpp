@@ -59,7 +59,7 @@ HRESULT CChangeFileTimeHandler::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARA
 	// create simple page instance, will be de-allocated by the CPropSheet callback
 	CSimplePage* simplePage       = new CSimplePage(fileList, hasFolders);
 	// create the HPROPSHEETPAGE handle
-	HPROPSHEETPAGE hPropSheetPage = simplePage->CreatePropertyPage(_Instance, IDD_SIMPLE_PAGE, IDI_ICON1);
+	HPROPSHEETPAGE hPropSheetPage = simplePage->CreatePropertyPage(_WinObjInstance, IDD_SIMPLE_PAGE, IDI_ICON1);
 	// register it with the Windows properties window
 	lpfnAddPage(hPropSheetPage, lParam);
 	return NOERROR;
