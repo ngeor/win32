@@ -270,11 +270,11 @@ LRESULT MainWindow::OnCommand(UINT message, WPARAM wParam, LPARAM lParam)
 	switch (id)
 	{
 		case ID_ABOUT:
-			DialogBox(GetInstance()->GetHandle(),
-					  (LPCTSTR)IDD_ABOUTBOX,
-					  GetHandle(),
-					  (DLGPROC)About);
-			break;
+		{
+			AboutDialog aboutDialog;
+			aboutDialog.Modal(*GetInstance(), *this, IDD_ABOUTBOX);
+		}
+		break;
 		case ID_EXIT:
 			DestroyWindow();
 			break;
