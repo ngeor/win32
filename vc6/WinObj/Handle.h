@@ -36,6 +36,13 @@ public:
 		assert(handle);
 		_handle = handle;
 	}
+
+    T Detach()
+    {
+        T currentValue = _handle;
+        _handle = NULL;
+        return currentValue;
+    }
 };
 } // namespace WinObj
 
