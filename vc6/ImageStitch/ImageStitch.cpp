@@ -69,6 +69,7 @@ LRESULT MainDialog::OnInitDialog(LPARAM lParam)
 	tbb[2].fsState   = TBSTATE_ENABLED;
 	tbb[2].fsStyle   = TBSTYLE_BUTTON;
 
+	// TODO: find a better way for GetInstance()->GetHandle()
 	CreateToolbarEx(GetHandle(), WS_CHILD | WS_VISIBLE, ID_TOOLBAR, 3 /* number of bitmaps */,
 	                GetInstance()->GetHandle(), IDB_TOOLBAR, tbb, 3 /* number of buttons */, 1, 0, 16, 16,
 	                sizeof(TBBUTTON));
@@ -82,6 +83,7 @@ void MainDialog::OnClose()
 
 void MainDialog::DoAddFile(LPCTSTR szFileName, LPCTSTR szPathName)
 {
+	// TODO do not use lstr* functions
 	ListEntry* le;
 	le = new ListEntry;
 	if (szPathName != NULL)
@@ -100,6 +102,7 @@ void MainDialog::DoAddFile(LPCTSTR szFileName, LPCTSTR szPathName)
 
 void MainDialog::OnCmdAdd()
 {
+	// TODO: find a better way for this constructor
 	WinObj::COpenFileName of(*GetInstance(), *this);
 	of.WithFilter(IDS_OPEN_IMAGE_FILTER)
 		.WithFilterIndex(1)
